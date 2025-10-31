@@ -53,16 +53,19 @@ final class GoPayApi implements GoPayApiInterface
      */
     public function create(array $order): Response
     {
+        // @phpstan-ignore return.type
         return $this->gopay->createPayment($order);
     }
 
     public function retrieve(int $paymentId): Response
     {
+        // @phpstan-ignore return.type
         return $this->gopay->getStatus($paymentId);
     }
 
     public function voidAuthorization(int $paymentId): Response
     {
+        // @phpstan-ignore return.type
         return $this->gopay->voidAuthorization($paymentId);
     }
 
@@ -77,6 +80,7 @@ final class GoPayApi implements GoPayApiInterface
         int $paymentId,
         int $amount,
     ): Response {
+        // @phpstan-ignore return.type
         return $this->gopay->refundPayment($paymentId, $amount);
     }
 }

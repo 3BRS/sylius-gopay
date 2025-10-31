@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod;
 
-use Sylius\Behat\Page\Admin\Channel\UpdatePageInterface as BaseUpdatePageInterface;
+use Sylius\Behat\Page\Admin\PaymentMethod\UpdatePageInterface as BaseUpdatePageInterface;
 
 interface EditPageInterface extends BaseUpdatePageInterface
 {

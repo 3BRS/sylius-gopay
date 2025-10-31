@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-	<services>
-		<defaults public="true"/>
+    <services>
+        <defaults public="true"/>
 
 		<service id="theebrs_sylius.gopay_payum.behat.context.ui.admin.managing_payment_methods" class="Sylius\Behat\Context\Ui\Admin\ManagingPaymentMethodsContext"
 			decorates="sylius.behat.context.ui.admin.managing_payment_methods">
@@ -12,25 +12,32 @@
 			<argument type="service" id="sylius.behat.page.admin.payment_method.index" />
 			<argument type="service" id="sylius.behat.page.admin.payment_method.update" />
 			<argument type="service" id="sylius.behat.current_page_resolver" />
-			<argument type="service" id="sylius.behat.notification_checker.admin" />
 			<argument type="collection">
 				<argument key="offline">Offline</argument>
 				<argument key="paypal_express_checkout">Paypal Express Checkout</argument>
 				<argument key="stripe_checkout">Stripe Checkout</argument>
 				<argument key="gopay">GoPay</argument>
 			</argument>
-		</service>
+        </service>
 
 		<service id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Ui\Admin\ManagingPaymentMethodsContext"
 				 class="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Ui\Admin\ManagingPaymentMethodsContext">
+			<argument type="service" id="sylius.behat.current_page_resolver" />
+			<argument type="service" id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\CreatePageInterface" />
 			<argument type="service" id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\EditPageInterface" />
-		</service>
+        </service>
+
+		<service id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\CreatePageInterface"
+				 class="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\CreatePage"
+				 parent="sylius.behat.page.admin.crud.create" public="false">
+			<argument type="string">sylius_admin_payment_method_create</argument>
+        </service>
 
 		<service id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\EditPageInterface"
 				 class="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\EditPage"
 				 parent="sylius.behat.page.admin.crud.update" public="false">
-			<argument type="string">sylius_admin_channel_update</argument>
-		</service>
+			<argument type="string">sylius_admin_payment_method_update</argument>
+        </service>
 
 		<service id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup\PaymentContext"
 				 class="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup\PaymentContext">
@@ -52,7 +59,7 @@
 			<argument type="service" id="sylius_abstraction.state_machine" />
 			<argument type="service" id="threebrs.gopay_payum.payments.factory" />
 			<argument type="service" id="sylius.behat.shared_storage" />
-		</service>
+        </service>
 
-	</services>
+    </services>
 </container>

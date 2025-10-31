@@ -7,7 +7,7 @@ namespace ThreeBRS\SyliusGoPayPlugin;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class SyliusGoPayPlugin extends Bundle
+final class ThreeBRSSyliusGoPayPlugin extends Bundle
 {
     use SyliusPluginTrait;
 }

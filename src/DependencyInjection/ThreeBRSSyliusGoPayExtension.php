@@ -9,13 +9,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * This is the class that loads and manages your bundle configuration.
  *
  * @see http://symfony.com/doc/current/cookbook/bundles/extension.html
  */
-class SyliusGoPayExtension extends Extension implements PrependExtensionInterface
+class ThreeBRSSyliusGoPayExtension extends Extension implements PrependExtensionInterface
 {
     public function load(
         array $configs,
@@ -27,10 +28,12 @@ class SyliusGoPayExtension extends Extension implements PrependExtensionInterfac
 
     public function prepend(ContainerBuilder $container): void
     {
-        if (!$container->hasExtension('winzou_state_machine')) {
-            return;
-        }
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/app'));
-        $loader->load('state_machine.yml');
+        $this->prependTwigHooks($container);
+    }
+
+    private function prependTwigHooks(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig('sylius_twig_hooks', Yaml::parseFile(__DIR__ . '/../Resources/config/twig_hooks/payment_method/create/gopay.yaml')['sylius_twig_hooks']);
+        $container->prependExtensionConfig('sylius_twig_hooks', Yaml::parseFile(__DIR__ . '/../Resources/config/twig_hooks/payment_method/update/gopay.yaml')['sylius_twig_hooks']);
     }
 }

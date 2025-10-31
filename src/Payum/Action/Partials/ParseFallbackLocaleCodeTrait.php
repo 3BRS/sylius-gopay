@@ -8,6 +8,6 @@ trait ParseFallbackLocaleCodeTrait
 {
     private function parseFallbackLocaleCode(string $localeCode): string
     {
-        return explode('_', $localeCode)[0] ?? $localeCode;
+        return explode('_', $localeCode)[0] ?: $localeCode;
     }
 }

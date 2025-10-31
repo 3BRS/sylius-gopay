@@ -3,5 +3,9 @@ imports:
     - { resource: "../../../vendor/sylius/sylius/src/Sylius/Behat/Resources/config/services.xml" }
 
 services:
+    # workaround needed for strange "test.client.history" problem
+    # see https://github.com/FriendsOfBehat/SymfonyExtension/issues/88
+    Symfony\Component\BrowserKit\AbstractBrowser: '@test.client'
+
     threebrs.gopay_payum.payments.factory:
         class: Tests\ThreeBRS\SyliusGoPayPlugin\Payum\GoPayPaymentsMockFactory

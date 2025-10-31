@@ -76,11 +76,15 @@ services:
         class: ThreeBRS\SyliusGoPayPlugin\StateMachine\RefundOrderProcessor
         arguments:
             $commandBus: '@sylius.command_bus'
+        tags:
+            - { name: kernel.event_listener, event: workflow.sylius_payment.completed.refund, method: __invoke }
 
     threebrs.gopay_payum.state_machine.cancel:
         class: ThreeBRS\SyliusGoPayPlugin\StateMachine\CancelOrderProcessor
         arguments:
             $commandBus: '@sylius.command_bus'
+        tags:
+            - { name: kernel.event_listener, event: workflow.sylius_payment.completed.cancel, method: __invoke }
 
     threebrs.gopay_payum.command.handler.refund:
         public: true

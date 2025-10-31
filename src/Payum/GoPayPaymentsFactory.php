@@ -31,6 +31,7 @@ class GoPayPaymentsFactory implements GoPayPaymentsFactoryInterface
         string $scope = TokenScope::ALL,
         int $timeout = 30,
     ): Payments {
+        // @phpstan-ignore return.type
         return Api::payments([
             'goid' => $goId,
             'clientId' => $clientId,

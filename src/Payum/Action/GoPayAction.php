@@ -195,6 +195,8 @@ class GoPayAction implements ApiAwareInterface, ActionInterface
             $model[self::EXTERNAL_PAYMENT_ID] = $response->json['id'];
             $request->setModel($model);
 
+            Assert::string($response->json['gw_url']);
+
             throw new HttpRedirect($response->json['gw_url']);
         }
 
@@ -217,15 +219,17 @@ class GoPayAction implements ApiAwareInterface, ActionInterface
     ): array {
         $notifyToken = $this->createNotifyToken($token->getGatewayName(), $token->getDetails());
 
-        $order = [];
-        $order['target']['type'] = 'ACCOUNT';
-        $order['target']['goid'] = $goid;
-        $order['currency'] = $model['currencyCode'];
-        $order['amount'] = $model['totalAmount'];
-        $order['order_number'] = $model['extOrderId'];
-        $order['lang'] = $model['locale'];
+        $order = [
+            'currency' => $model['currencyCode'],
+            'target' => [
+                'type' => 'ACCOUNT',
+                'goid' => $goid,
+            ],
+            'amount' => $model['totalAmount'],
+            'order_number' => $model['extOrderId'],
+            'lang' => $model['locale'],
+        ];
 
-        /** @var CustomerInterface $customer */
         $customer = $model['customer'];
 
         Assert::isInstanceOf(
@@ -243,11 +247,13 @@ class GoPayAction implements ApiAwareInterface, ActionInterface
             'last_name' => (string) $customer->getLastName(),
         ];
 
-        $order['payer']['contact'] = $payerContact;
+        $order['payer'] = ['contact' => $payerContact];
         $order['items'] = $this->resolveProducts($model);
 
-        $order['callback']['return_url'] = $token->getTargetUrl();
-        $order['callback']['notification_url'] = $notifyToken->getTargetUrl();
+        $order['callback'] = [
+            'return_url' => $token->getTargetUrl(),
+            'notification_url' => $notifyToken->getTargetUrl(),
+        ];
 
         return $order;
     }

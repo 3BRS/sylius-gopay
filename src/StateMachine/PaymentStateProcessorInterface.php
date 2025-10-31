@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ThreeBRS\SyliusGoPayPlugin\StateMachine;
 
-use Sylius\Component\Core\Model\PaymentInterface;
+use Symfony\Component\Workflow\Event\CompletedEvent;
 
 interface PaymentStateProcessorInterface
 {
-    public function __invoke(PaymentInterface $payment, string $fromState): void;
+    public function __invoke(CompletedEvent $event): void;
 }

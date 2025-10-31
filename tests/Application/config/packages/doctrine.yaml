@@ -7,8 +7,9 @@ parameters:
 
 doctrine:
     dbal:
+        driver: 'pdo_mysql'
+        server_version: '8.0'
         url: '%env(resolve:DATABASE_URL)%'
-        charset: UTF8
 
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
@@ -19,5 +20,5 @@ doctrine:
                 is_bundle: false
                 type: attribute
                 dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'Tests\ThreeBRS\SyliusGoPayPlugin\Application\src\Entity'
+                prefix: 'Tests\ThreeBRS\SyliusGoPayPlugin\Entity'
                 alias: App

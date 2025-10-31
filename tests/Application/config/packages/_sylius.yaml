@@ -1,9 +1,11 @@
 imports:
-    - { resource: "@SyliusCoreBundle/Resources/config/app/config.yml" }
-    - { resource: "@SyliusPayumBundle/Resources/config/app/config.yaml" }
-    - { resource: "@SyliusAdminBundle/Resources/config/app/config.yml" }
-    - { resource: "@SyliusShopBundle/Resources/config/app/config.yml" }
-    - { resource: "@SyliusApiBundle/Resources/config/app/config.yaml" }
+    - { resource: "@SyliusCoreBundle/Resources/config/app/config.y*ml" }
+    - { resource: "@SyliusPayumBundle/Resources/config/app/config.y*ml" }
+    - { resource: "@SyliusAdminBundle/Resources/config/app/config.y*ml" }
+    - { resource: "@SyliusShopBundle/Resources/config/app/config.y*ml" }
+    - { resource: "@SyliusApiBundle/Resources/config/app/config.y*ml" }
+
+    - { resource: "@ThreeBRSSyliusGoPayPlugin/Resources/config/config.yaml" }
 
 parameters:
     sylius_core.public_dir: '%kernel.project_dir%/public'
@@ -14,10 +16,3 @@ sylius_shop:
 
 sylius_api:
     enabled: true
-
-sylius_twig_hooks:
-    hooks:
-        'sylius_admin.payment_method.create.content.form.sections.gateway_configuration.sylius_payment':
-            api_key:
-                template: '@AcmeSyliusExamplePlugin/admin/payment_method/api_key.html.twig'
-                priority: 0

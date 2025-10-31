@@ -38,7 +38,9 @@ trait UpdateOrderActionTrait
             $model[GoPayAction::GOPAY_STATUS] = $response->json['state'];
             $request->setModel($model);
         } else {
-            $this->getLogger()->warning(sprintf("Unknown GoPay state: '%s'", $response->json['state']));
+            $this->getLogger()->warning(
+                sprintf('Unknown GoPay state: %s', var_export($response->json['state'], true)),
+            );
         }
     }
 

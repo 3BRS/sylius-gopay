@@ -6,6 +6,7 @@ namespace ThreeBRS\SyliusGoPayPlugin\StateMachine;
 
 use Sylius\Component\Core\Model\PaymentInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Workflow\Event\CompletedEvent;
 use ThreeBRS\SyliusGoPayPlugin\Message\Command\RefundPayment;
 use ThreeBRS\SyliusGoPayPlugin\Payum\Action\GoPayAction;
 use Webmozart\Assert\Assert;
@@ -17,10 +18,11 @@ final class RefundOrderProcessor implements PaymentStateProcessorInterface
     ) {
     }
 
-    public function __invoke(
-        PaymentInterface $payment,
-        string $fromState,
-    ): void {
+    public function __invoke(CompletedEvent $event): void
+    {
+        /** @var PaymentInterface $payment */
+        $payment = $event->getSubject();
+
         if ($payment->getState() === PaymentInterface::STATE_REFUNDED &&
             !empty($payment->getDetails()[GoPayAction::REFUND_ID])) {
             return;
