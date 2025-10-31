@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\ThreeBRS\SyliusGoPayPayumPlugin\Payum;
+namespace Tests\ThreeBRS\SyliusGoPayPlugin\Payum;
 
 use GoPay\Http\Response;
 use GoPay\Payments;
@@ -28,7 +28,7 @@ class GoPayPaymentsMock extends Payments
         $this->lastAmount = $data;
 
         /**
-         * @see \ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\GoPayAction::processRefund
+         * @see \ThreeBRS\SyliusGoPayPlugin\Payum\Action\GoPayAction::processRefund
          * for expected response
          */
         $data = ['id' => 3276091767, 'result' => 'FINISHED'];
@@ -48,7 +48,7 @@ class GoPayPaymentsMock extends Payments
         $this->lastPaymentId = $id;
 
         /**
-         * @see \ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\GoPayAction::processCapture()
+         * @see \ThreeBRS\SyliusGoPayPlugin\Payum\Action\GoPayAction::processCapture()
          * for expected response
          */
         $data = ['orderId' => 1234, 'externalPaymentId' => 4567, 'state' => 'REFUNDED'];

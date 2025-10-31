@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Setup;
+namespace Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Doctrine\Persistence\ObjectManager;
@@ -10,9 +10,9 @@ use Sylius\Abstraction\StateMachine\StateMachineInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Payment\PaymentTransitions;
-use Tests\ThreeBRS\SyliusGoPayPayumPlugin\Payum\GoPayPaymentsMockFactory;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\GoPayAction;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\GoPayPaymentsFactoryInterface;
+use Tests\ThreeBRS\SyliusGoPayPlugin\Payum\GoPayPaymentsMockFactory;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Action\GoPayAction;
+use ThreeBRS\SyliusGoPayPlugin\Payum\GoPayPaymentsFactoryInterface;
 use Webmozart\Assert\Assert;
 
 readonly class OrderContext implements Context

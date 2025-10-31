@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Pages\Admin\PaymentMethod;
+namespace Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod;
 
 use Sylius\Behat\Page\Admin\Channel\UpdatePageInterface as BaseUpdatePageInterface;
 

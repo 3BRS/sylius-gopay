@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\Partials;
+namespace ThreeBRS\SyliusGoPayPlugin\Payum\Action\Partials;
 
 use Payum\Core\Exception\UnsupportedApiException;
-use ThreeBRS\SyliusGoPayPayumPlugin\Api\GoPayApiInterface;
+use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
 use Webmozart\Assert\Assert;
 
 trait AuthorizeGoPayActionTrait

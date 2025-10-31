@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Setup;
+namespace Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Doctrine\Persistence\ObjectManager;

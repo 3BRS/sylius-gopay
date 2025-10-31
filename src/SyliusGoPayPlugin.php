@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin;
+namespace ThreeBRS\SyliusGoPayPlugin;
 
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class SyliusGoPayPayumPlugin extends Bundle
+final class SyliusGoPayPlugin extends Bundle
 {
     use SyliusPluginTrait;
 }

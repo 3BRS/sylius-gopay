@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\Factory;
+namespace ThreeBRS\SyliusGoPayPlugin\Payum\Request\Factory;
 
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\TokenInterface;

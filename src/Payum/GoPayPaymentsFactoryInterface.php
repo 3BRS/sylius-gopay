@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Payum;
+namespace ThreeBRS\SyliusGoPayPlugin\Payum;
 
 use GoPay\Definition\Language;
 use GoPay\Definition\TokenScope;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\Partials;
+namespace ThreeBRS\SyliusGoPayPlugin\Payum\Action\Partials;
 
 trait ParseFallbackLocaleCodeTrait
 {

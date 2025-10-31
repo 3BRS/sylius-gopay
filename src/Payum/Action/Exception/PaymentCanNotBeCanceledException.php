@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\Exception;
+namespace ThreeBRS\SyliusGoPayPlugin\Payum\Action\Exception;
 
 class PaymentCanNotBeCanceledException extends \RuntimeException
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action;
+namespace ThreeBRS\SyliusGoPayPlugin\Payum\Action;
 
 use ArrayAccess;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\GetStatusInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Api\GoPayApiInterface;
+use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
 
 class StatusAction implements ActionInterface
 {

@@ -19,5 +19,5 @@ doctrine:
                 is_bundle: false
                 type: attribute
                 dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'Tests\ThreeBRS\SyliusGoPayPayumPlugin\Application\src\Entity'
+                prefix: 'Tests\ThreeBRS\SyliusGoPayPlugin\Application\src\Entity'
                 alias: App

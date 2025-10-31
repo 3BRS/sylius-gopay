@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Message\CommandHandler;
+namespace ThreeBRS\SyliusGoPayPlugin\Message\CommandHandler;
 
 use Payum\Core\Payum;
 use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Api\GoPayApiInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Message\Command\CancelPayment;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\Exception\PaymentCanNotBeCanceledException;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\Factory\CancelRequestFactoryInterface;
+use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
+use ThreeBRS\SyliusGoPayPlugin\Message\Command\CancelPayment;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Action\Exception\PaymentCanNotBeCanceledException;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Request\Factory\CancelRequestFactoryInterface;
 
 final class CancelPaymentHandler extends AbstractPayumPaymentHandler
 {

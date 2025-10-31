@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action;
+namespace ThreeBRS\SyliusGoPayPlugin\Payum\Action;
 
 use ArrayObject;
 use GoPay\Http\Response;
@@ -18,11 +18,11 @@ use Payum\Core\Storage\IdentityInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Sylius\Component\Core\Model\CustomerInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Api\GoPayApiInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\Exception\PaymentCanNotBeCanceledException;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\Partials\AuthorizeGoPayActionTrait;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\Partials\UpdateOrderActionTrait;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\GoPayPayumRequest;
+use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Action\Exception\PaymentCanNotBeCanceledException;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Action\Partials\AuthorizeGoPayActionTrait;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Action\Partials\UpdateOrderActionTrait;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Request\GoPayPayumRequest;
 use Webmozart\Assert\Assert;
 
 class GoPayAction implements ApiAwareInterface, ActionInterface

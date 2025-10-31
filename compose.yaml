@@ -2,7 +2,8 @@ services:
     php:
         build: ./.docker/php
         environment:
-            APP_ENV: "test"
+            APP_ENV: "dev"
+            APP_DEBUG: "1"
             DATABASE_URL: "mysql://root:mysql@mysql/sylius_%kernel.environment%?charset=utf8mb4"
 #            DATABASE_URL: "pgsql://root:postgres@postgres/sylius_%kernel.environment%?charset=utf8" # When using postgres
             PHP_DATE_TIMEZONE: "Europe/Prague"
@@ -28,8 +29,6 @@ services:
         depends_on:
             - mysql
 #            - postgres
-        networks:
-            - sylius
 
     nginx:
         build: ./.docker/nginx
@@ -39,8 +38,6 @@ services:
             - ./:/srv/sylius:delegated
         ports:
             - "${APP_HOST_MAPPING_PORT:-8080}:80"
-        networks:
-            - sylius
 
     mysql:
         image: mysql:8.0
@@ -51,11 +48,9 @@ services:
             # Host port 0 is for "first available"
             # How to change it:
             # - set MYSQL_HOST_MAPPING_PORT variable in .env file for example
-            # - or extends ports in compose.override.yml
+            # - or extends ports in compose.override.yaml
             # To find out used port use `docker ps` and look for PORTS column to see mapped host port, including IP it can be for example 0.0.0.0:32772 which is roughly equivalent to 127.0.0.1:32772 for internal network requests
-            - "${MYSQL_HOST_MAPPING_PORT:-0}:3306"
-        networks:
-            - sylius
+            - "${MYSQL_HOST_MAPPING_PORT:-3306}:3306"
 
 #    postgres:
 #        image: postgres:${POSTGRES_VERSION:-16}-alpine
@@ -67,12 +62,6 @@ services:
 #            - ${POSTGRES_PORT:-5432}:5432
 #        volumes:
 #            - database_data:/var/lib/postgresql/data:rw
-#        networks:
-#            - sylius
 
 # volumes:
 #    database_data:
-
-networks:
-    sylius:
-        driver: bridge

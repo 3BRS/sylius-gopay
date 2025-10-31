@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Ui\Admin;
+namespace Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
-use Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Pages\Admin\PaymentMethod\EditPageInterface;
+use Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\EditPageInterface;
 
 final class ManagingPaymentMethodsContext implements Context
 {

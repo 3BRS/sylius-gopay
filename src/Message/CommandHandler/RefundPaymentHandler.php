@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Message\CommandHandler;
+namespace ThreeBRS\SyliusGoPayPlugin\Message\CommandHandler;
 
 use Payum\Core\Payum;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Message\Command\RefundPayment;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\Factory\CaptureRequestFactoryInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\Factory\RefundRequestFactoryInterface;
+use ThreeBRS\SyliusGoPayPlugin\Message\Command\RefundPayment;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Request\Factory\CaptureRequestFactoryInterface;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Request\Factory\RefundRequestFactoryInterface;
 
 final class RefundPaymentHandler extends AbstractPayumPaymentHandler
 {

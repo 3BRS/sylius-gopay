@@ -6,7 +6,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # project root
 cd "$(dirname "$DIR")"
 
-mkdir -p tests/Application/public/media/image
+APP_ENV="test" php bin/console doctrine:database:create --no-interaction --if-not-exists
+APP_ENV="test" php bin/console doctrine:migrations:migrate --no-interaction
+APP_ENV="test" php bin/console doctrine:schema:update --complete --force --no-interaction
 
 set -x
-APP_ENV="test" php -d error_reporting="E_ALL ^ E_DEPRECATED" -d memory_limit=1G vendor/bin/behat "$@"
+
+APP_ENV="test" php vendor/bin/behat "$@"

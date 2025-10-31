@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Api;
+namespace ThreeBRS\SyliusGoPayPlugin\Api;
 
 use GoPay\Definition\Language;
 use GoPay\Definition\TokenScope;
 use GoPay\Http\Response;
 use GoPay\Payments;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\GoPayPaymentsFactoryInterface;
+use ThreeBRS\SyliusGoPayPlugin\Payum\GoPayPaymentsFactoryInterface;
 
 final class GoPayApi implements GoPayApiInterface
 {

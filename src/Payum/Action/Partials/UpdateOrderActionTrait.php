@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\Partials;
+namespace ThreeBRS\SyliusGoPayPlugin\Payum\Action\Partials;
 
 use Payum\Core\Model\ModelAwareInterface;
 use Psr\Log\LoggerInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Api\GoPayApiInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\GoPayAction;
+use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Action\GoPayAction;
 
 trait UpdateOrderActionTrait
 {

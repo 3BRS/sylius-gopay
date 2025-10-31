@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action;
+namespace ThreeBRS\SyliusGoPayPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -13,10 +13,10 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Cancel;
 use Payum\Core\Security\TokenInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Api\GoPayApiInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\Partials\AuthorizeGoPayActionTrait;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\Partials\ParseFallbackLocaleCodeTrait;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\GoPayPayumRequest;
+use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Action\Partials\AuthorizeGoPayActionTrait;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Action\Partials\ParseFallbackLocaleCodeTrait;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Request\GoPayPayumRequest;
 
 final class CancelAction implements
     ActionInterface,

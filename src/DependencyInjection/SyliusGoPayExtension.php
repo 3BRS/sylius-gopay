@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\DependencyInjection;
+namespace ThreeBRS\SyliusGoPayPlugin\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @see http://symfony.com/doc/current/cookbook/bundles/extension.html
  */
-class SyliusGoPayPayumExtension extends Extension implements PrependExtensionInterface
+class SyliusGoPayExtension extends Extension implements PrependExtensionInterface
 {
     public function load(
         array $configs,

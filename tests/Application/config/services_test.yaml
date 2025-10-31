@@ -4,4 +4,4 @@ imports:
 
 services:
     threebrs.gopay_payum.payments.factory:
-        class: Tests\ThreeBRS\SyliusGoPayPayumPlugin\Payum\GoPayPaymentsMockFactory
+        class: Tests\ThreeBRS\SyliusGoPayPlugin\Payum\GoPayPaymentsMockFactory

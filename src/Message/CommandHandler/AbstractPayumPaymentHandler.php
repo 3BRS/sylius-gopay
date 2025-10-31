@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Message\CommandHandler;
+namespace ThreeBRS\SyliusGoPayPlugin\Message\CommandHandler;
 
 use Payum\Core\Payum;
 use Payum\Core\Security\TokenInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Message\Command\PaymentCommandInterface;
+use ThreeBRS\SyliusGoPayPlugin\Message\Command\PaymentCommandInterface;
 
 abstract class AbstractPayumPaymentHandler
 {

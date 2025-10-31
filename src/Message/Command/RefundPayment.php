@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Message\Command;
+namespace ThreeBRS\SyliusGoPayPlugin\Message\Command;
 
 /**
- * @see \ThreeBRS\SyliusGoPayPayumPlugin\Message\CommandHandler\RefundPaymentHandler
+ * @see \ThreeBRS\SyliusGoPayPlugin\Message\CommandHandler\RefundPaymentHandler
  */
 class RefundPayment extends PaymentCommand
 {

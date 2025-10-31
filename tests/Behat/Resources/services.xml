@@ -21,19 +21,19 @@
 			</argument>
 		</service>
 
-		<service id="Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Ui\Admin\ManagingPaymentMethodsContext"
-				 class="Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Ui\Admin\ManagingPaymentMethodsContext">
-			<argument type="service" id="Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Pages\Admin\PaymentMethod\EditPageInterface" />
+		<service id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Ui\Admin\ManagingPaymentMethodsContext"
+				 class="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Ui\Admin\ManagingPaymentMethodsContext">
+			<argument type="service" id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\EditPageInterface" />
 		</service>
 
-		<service id="Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Pages\Admin\PaymentMethod\EditPageInterface"
-				 class="Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Pages\Admin\PaymentMethod\EditPage"
+		<service id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\EditPageInterface"
+				 class="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\EditPage"
 				 parent="sylius.behat.page.admin.crud.update" public="false">
 			<argument type="string">sylius_admin_channel_update</argument>
 		</service>
 
-		<service id="Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Setup\PaymentContext"
-				 class="Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Setup\PaymentContext">
+		<service id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup\PaymentContext"
+				 class="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup\PaymentContext">
 			<argument type="service" id="sylius.behat.shared_storage" />
 			<argument type="service" id="sylius.repository.payment_method" />
 			<argument type="service" id="sylius.fixture.example_factory.payment_method" />
@@ -47,7 +47,7 @@
 		</service>
 
 
-		<service id="Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Setup\OrderContext" class="Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Setup\OrderContext">
+		<service id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup\OrderContext" class="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup\OrderContext">
 			<argument type="service" id="doctrine.orm.entity_manager" />
 			<argument type="service" id="sylius_abstraction.state_machine" />
 			<argument type="service" id="threebrs.gopay_payum.payments.factory" />

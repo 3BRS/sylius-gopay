@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\StateMachine;
+namespace ThreeBRS\SyliusGoPayPlugin\StateMachine;
 
 use Sylius\Component\Core\Model\PaymentInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Message\Command\RefundPayment;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\GoPayAction;
+use ThreeBRS\SyliusGoPayPlugin\Message\Command\RefundPayment;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Action\GoPayAction;
 use Webmozart\Assert\Assert;
 
 final class RefundOrderProcessor implements PaymentStateProcessorInterface

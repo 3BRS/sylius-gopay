@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action;
+namespace ThreeBRS\SyliusGoPayPlugin\Payum\Action;
 
 use ArrayAccess;
 use Payum\Core\Action\ActionInterface;
@@ -14,8 +14,8 @@ use Payum\Core\Request\Capture;
 use Payum\Core\Security\TokenInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\Partials\ParseFallbackLocaleCodeTrait;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\GoPayPayumRequest;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Action\Partials\ParseFallbackLocaleCodeTrait;
+use ThreeBRS\SyliusGoPayPlugin\Payum\Request\GoPayPayumRequest;
 use Webmozart\Assert\Assert;
 
 final class CaptureAction implements ActionInterface, GatewayAwareInterface

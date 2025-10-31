@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Message\Command;
+namespace ThreeBRS\SyliusGoPayPlugin\Message\Command;
 
 interface PaymentCommandInterface
 {

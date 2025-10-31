@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\ThreeBRS\SyliusGoPayPayumPlugin\Payum;
+namespace Tests\ThreeBRS\SyliusGoPayPlugin\Payum;
 
 use GoPay\Definition\Language;
 use GoPay\Definition\TokenScope;
 use GoPay\Payments;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\GoPayPaymentsFactoryInterface;
+use ThreeBRS\SyliusGoPayPlugin\Payum\GoPayPaymentsFactoryInterface;
 
 class GoPayPaymentsMockFactory implements GoPayPaymentsFactoryInterface
 {

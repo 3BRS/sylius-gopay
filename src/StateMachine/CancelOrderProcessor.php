@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\StateMachine;
+namespace ThreeBRS\SyliusGoPayPlugin\StateMachine;
 
 use Sylius\Component\Payment\Model\PaymentInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use ThreeBRS\SyliusGoPayPayumPlugin\Message\Command\CancelPayment;
+use ThreeBRS\SyliusGoPayPlugin\Message\Command\CancelPayment;
 use Webmozart\Assert\Assert;
 
 final class CancelOrderProcessor implements PaymentStateProcessorInterface
