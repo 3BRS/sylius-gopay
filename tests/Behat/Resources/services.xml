@@ -6,7 +6,7 @@
     <services>
         <defaults public="true"/>
 
-		<service id="theebrs_sylius.gopay_payum.behat.context.ui.admin.managing_payment_methods" class="Sylius\Behat\Context\Ui\Admin\ManagingPaymentMethodsContext"
+		<service id="theebrs_sylius.gopay.behat.context.ui.admin.managing_payment_methods" class="Sylius\Behat\Context\Ui\Admin\ManagingPaymentMethodsContext"
 			decorates="sylius.behat.context.ui.admin.managing_payment_methods">
 			<argument type="service" id="sylius.behat.page.admin.payment_method.create" />
 			<argument type="service" id="sylius.behat.page.admin.payment_method.index" />
@@ -57,7 +57,7 @@
 		<service id="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup\OrderContext" class="Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup\OrderContext">
 			<argument type="service" id="doctrine.orm.entity_manager" />
 			<argument type="service" id="sylius_abstraction.state_machine" />
-			<argument type="service" id="threebrs.gopay_payum.payments.factory" />
+			<argument type="service" id="threebrs.gopay.payments.factory" />
 			<argument type="service" id="sylius.behat.shared_storage" />
         </service>
 

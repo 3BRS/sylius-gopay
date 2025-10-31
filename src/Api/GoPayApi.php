@@ -8,7 +8,7 @@ use GoPay\Definition\Language;
 use GoPay\Definition\TokenScope;
 use GoPay\Http\Response;
 use GoPay\Payments;
-use ThreeBRS\SyliusGoPayPlugin\Payum\GoPayPaymentsFactoryInterface;
+use ThreeBRS\SyliusGoPayPlugin\Factory\GoPayPaymentsFactoryInterface;
 
 final class GoPayApi implements GoPayApiInterface
 {

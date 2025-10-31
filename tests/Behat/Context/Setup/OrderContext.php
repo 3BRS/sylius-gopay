@@ -10,9 +10,9 @@ use Sylius\Abstraction\StateMachine\StateMachineInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Payment\PaymentTransitions;
-use Tests\ThreeBRS\SyliusGoPayPlugin\Payum\GoPayPaymentsMockFactory;
-use ThreeBRS\SyliusGoPayPlugin\Payum\Action\GoPayAction;
-use ThreeBRS\SyliusGoPayPlugin\Payum\GoPayPaymentsFactoryInterface;
+use Tests\ThreeBRS\SyliusGoPayPlugin\Payment\GoPayPaymentsMockFactory;
+use ThreeBRS\SyliusGoPayPlugin\Model\PaymentConstants;
+use ThreeBRS\SyliusGoPayPlugin\Factory\GoPayPaymentsFactoryInterface;
 use Webmozart\Assert\Assert;
 
 readonly class OrderContext implements Context
@@ -45,8 +45,8 @@ readonly class OrderContext implements Context
         Assert::numeric($externalPaymentId);
 
         $lastPayment->setDetails([
-            GoPayAction::ORDER_ID => 123456,
-            GoPayAction::EXTERNAL_PAYMENT_ID => (int)$externalPaymentId,
+            PaymentConstants::ORDER_ID => 123456,
+            PaymentConstants::EXTERNAL_PAYMENT_ID => (int)$externalPaymentId,
         ]);
 
         $this->sharedStorage->set('external_payment_ID', $externalPaymentId);

@@ -7,5 +7,5 @@ services:
     # see https://github.com/FriendsOfBehat/SymfonyExtension/issues/88
     Symfony\Component\BrowserKit\AbstractBrowser: '@test.client'
 
-    threebrs.gopay_payum.payments.factory:
-        class: Tests\ThreeBRS\SyliusGoPayPlugin\Payum\GoPayPaymentsMockFactory
+    threebrs.gopay.payments.factory:
+        class: Tests\ThreeBRS\SyliusGoPayPlugin\Payment\GoPayPaymentsMockFactory
