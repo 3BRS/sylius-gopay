@@ -1,3 +1,7 @@
+imports:
+    - { resource: 'services/state_machine.yaml' }
+    - { resource: 'services/listeners.yaml' }
+
 services:
     _defaults:
         autowire: false
@@ -64,6 +68,11 @@ services:
         tags:
             - { name: threebrs.command_provider.payment_request.gopay, action: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_CANCEL }
 
+    threebrs.command_provider.payment_request.gopay.complete_authorized:
+        class: ThreeBRS\SyliusGoPayPlugin\CommandProvider\CompleteAuthorizedPaymentRequestCommandProvider
+        tags:
+            - { name: threebrs.command_provider.payment_request.gopay, action: complete_authorized }
+
     # Payment Request - HTTP Response Providers
     threebrs.provider.order_pay.http_response.gopay:
         class: Sylius\Bundle\PaymentBundle\Provider\ActionsHttpResponseProvider
@@ -107,6 +116,10 @@ services:
         autowire: true
 
     ThreeBRS\SyliusGoPayPlugin\CommandHandler\CancelPaymentRequestHandler:
+        autoconfigure: true
+        autowire: true
+
+    ThreeBRS\SyliusGoPayPlugin\CommandHandler\CompleteAuthorizedPaymentRequestHandler:
         autoconfigure: true
         autowire: true
 

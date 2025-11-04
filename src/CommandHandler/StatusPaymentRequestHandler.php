@@ -51,10 +51,6 @@ final readonly class StatusPaymentRequestHandler
         // Retrieve current status from GoPay
         $goPayResponse = $this->goPayApi->retrieve($externalPaymentId);
 
-        if ($goPayResponse === null) {
-            return;
-        }
-
         // Update payload with current status
         $payload[PaymentConstants::GOPAY_STATUS] = $goPayResponse->json['state'] ?? null;
         $paymentRequest->setPayload($payload);
@@ -99,8 +95,11 @@ final readonly class StatusPaymentRequestHandler
     private function authorizeGoPayApi(array $gatewayConfig): void
     {
         $this->goPayApi->authorize(
+            // @phpstan-ignore-next-line
             goId: (string) ($gatewayConfig['goid'] ?? ''),
+            // @phpstan-ignore-next-line
             clientId: (string) ($gatewayConfig['clientId'] ?? ''),
+            // @phpstan-ignore-next-line
             clientSecret: (string) ($gatewayConfig['clientSecret'] ?? ''),
             isProductionMode: (bool) ($gatewayConfig['isProductionMode'] ?? false),
         );

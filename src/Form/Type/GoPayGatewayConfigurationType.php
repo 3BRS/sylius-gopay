@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ThreeBRS\SyliusGoPayPlugin\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -18,12 +18,14 @@ final class GoPayGatewayConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('isProductionMode', ChoiceType::class, [
-                'choices' => [
-                    'sylius.ui.no_label' => false,
-                    'sylius.ui.yes_label' => true,
-                ],
+            ->add('isProductionMode', CheckboxType::class, [
                 'label' => 'threebrs.gopay_plugin.is_production_mode',
+                'required' => false,
+            ])
+            ->add('useAuthorize', CheckboxType::class, [
+                'label' => 'threebrs.gopay_plugin.use_authorize',
+                'help' => 'threebrs.gopay_plugin.use_authorize_help',
+                'required' => false,
             ])
             ->add('goid', TextType::class, [
                 'label' => 'threebrs.gopay_plugin.goid',

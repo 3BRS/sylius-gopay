@@ -15,7 +15,7 @@ final class GoPayApi implements GoPayApiInterface
     private Payments $gopay;
 
     public function __construct(
-        private GoPayPaymentsFactoryInterface $gopayPaymentsFactory,
+        private readonly GoPayPaymentsFactoryInterface $gopayPaymentsFactory,
     ) {
     }
 
@@ -82,5 +82,31 @@ final class GoPayApi implements GoPayApiInterface
     ): Response {
         // @phpstan-ignore return.type
         return $this->gopay->refundPayment($paymentId, $amount);
+    }
+
+    /**
+     * Capture the full amount of a pre-authorized payment
+     *
+     * @see https://doc.gopay.com/#pre-authorization
+     */
+    public function captureAuthorization(int $paymentId): Response
+    {
+        // @phpstan-ignore return.type
+        return $this->gopay->captureAuthorization($paymentId);
+    }
+
+    /**
+     * Capture a partial amount of a pre-authorized payment
+     *
+     * @see https://doc.gopay.com/#pre-authorization
+     *
+     * @param int $amount Amount to capture (must be less than or equal to authorized amount)
+     */
+    public function captureAuthorizationPartial(int $paymentId, int $amount): Response
+    {
+        // @phpstan-ignore return.type
+        return $this->gopay->captureAuthorizationPartial($paymentId, [
+            'amount' => $amount,
+        ]);
     }
 }

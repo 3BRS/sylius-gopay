@@ -11,10 +11,10 @@ trait GoPayApiConfigurationTrait
      */
     private function getGoId(array $gatewayConfig): string
     {
-        $goid = $gatewayConfig['goid'] ?? '';
-        assert(is_string($goid), 'GoId must be a string');
+        $goId = $gatewayConfig['goid'] ?? '';
+        assert(is_string($goId), 'Go ID must be a string');
 
-        return $goid;
+        return $goId;
     }
 
     /**

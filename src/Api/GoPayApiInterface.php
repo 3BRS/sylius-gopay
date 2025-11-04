@@ -62,4 +62,8 @@ interface GoPayApiInterface
         int $paymentId,
         int $amount,
     ): Response;
+
+    public function captureAuthorization(int $paymentId): Response;
+
+    public function captureAuthorizationPartial(int $paymentId, int $amount): Response;
 }

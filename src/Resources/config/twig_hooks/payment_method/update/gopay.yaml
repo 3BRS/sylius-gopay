@@ -1,5 +1,6 @@
 sylius_twig_hooks:
     hooks:
         'sylius_admin.payment_method.update.content.form.sections.gateway_configuration.gopay':
-            gopay_config:
+            form:
                 template: '@ThreeBRSSyliusGoPayPlugin/admin/payment_method/form/gateway_config/gopay.html.twig'
+                priority: 0

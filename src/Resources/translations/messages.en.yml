@@ -5,3 +5,5 @@ threebrs:
         gateway_label: GoPay
         goid: Go ID
         is_production_mode: Production mode
+        use_authorize: Just authorize the payments
+        use_authorize_help: Amount is only reserved, not charged immediately. The actual charge will occur when the payment is manually marked as "Completed" in the admin panel.

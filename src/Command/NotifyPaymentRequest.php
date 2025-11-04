@@ -19,10 +19,10 @@ class NotifyPaymentRequest implements PaymentRequestHashAwareInterface
      * @param array<string, mixed> $responseData
      */
     public function __construct(
-        ?string $hash,
+        ?string $paymentIdAsHash,
         private readonly array $responseData = [],
     ) {
-        $this->hash = $hash;
+        $this->hash = $paymentIdAsHash;
     }
 
     /**

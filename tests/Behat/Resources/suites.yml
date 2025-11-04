@@ -1,4 +1,6 @@
 imports:
-    - suites/select_payment_method_checkout.yml
     - suites/adding_payment_method.yml
-    - suites/refund_order.yml
+    - suites/capturing_authorized_payment.yml
+    - suites/managing_payment_method_authorize.yml
+    - suites/refunding_order_payment.yml
+    - suites/select_payment_method_checkout.yml

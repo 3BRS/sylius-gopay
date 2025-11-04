@@ -10,11 +10,11 @@ use Sylius\Component\Payment\Model\PaymentRequestInterface;
 use Sylius\Component\Payment\PaymentRequestTransitions;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
-use ThreeBRS\SyliusGoPayPlugin\Command\RefundPaymentRequest;
+use ThreeBRS\SyliusGoPayPlugin\Command\CompleteAuthorizedPaymentRequest;
 use ThreeBRS\SyliusGoPayPlugin\Model\PaymentConstants;
 
 #[AsMessageHandler]
-final readonly class RefundPaymentRequestHandler
+final readonly class CompleteAuthorizedPaymentRequestHandler
 {
     public function __construct(
         private PaymentRequestProviderInterface $paymentRequestProvider,
@@ -24,26 +24,27 @@ final readonly class RefundPaymentRequestHandler
     }
 
     /**
-     * Handles @see PaymentRequestInterface::ACTION_REFUND
+     * Handles capturing an authorized payment
      *
-     * Refund a payment at GoPay (full or partial refund)
+     * This is triggered when admin manually captures an authorized payment
+     * by transitioning payment state from AUTHORIZED to COMPLETED
      */
-    public function __invoke(RefundPaymentRequest $refundPaymentRequest): void
+    public function __invoke(CompleteAuthorizedPaymentRequest $completeAuthorizedPaymentRequest): void
     {
-        $paymentRequest = $this->paymentRequestProvider->provide($refundPaymentRequest);
+        $paymentRequest = $this->paymentRequestProvider->provide($completeAuthorizedPaymentRequest);
 
-        // Get external payment ID from original capture request
-        $captureRequest = $this->findCaptureRequest($paymentRequest);
-        if ($captureRequest === null) {
+        // Find the original CAPTURE/AUTHORIZE request to get external payment ID
+        $authorizeRequest = $this->findAuthorizeRequest($paymentRequest);
+        if ($authorizeRequest === null) {
             $this->failPaymentRequest($paymentRequest);
 
             return;
         }
 
-        /** @var array<string, mixed> $capturePayload */
-        $capturePayload = $captureRequest->getPayload() ?? [];
-        $externalPaymentId = isset($capturePayload[PaymentConstants::EXTERNAL_PAYMENT_ID]) && is_int($capturePayload[PaymentConstants::EXTERNAL_PAYMENT_ID])
-            ? $capturePayload[PaymentConstants::EXTERNAL_PAYMENT_ID]
+        /** @var array<string, mixed> $authorizePayload */
+        $authorizePayload = $authorizeRequest->getPayload() ?? [];
+        $externalPaymentId = isset($authorizePayload[PaymentConstants::EXTERNAL_PAYMENT_ID]) && is_int($authorizePayload[PaymentConstants::EXTERNAL_PAYMENT_ID])
+            ? $authorizePayload[PaymentConstants::EXTERNAL_PAYMENT_ID]
             : null;
 
         if ($externalPaymentId === null) {
@@ -56,7 +57,7 @@ final readonly class RefundPaymentRequestHandler
         $gatewayConfig = $paymentRequest->getMethod()->getGatewayConfig()?->getConfig() ?? [];
         $this->authorizeGoPayApi($gatewayConfig);
 
-        // Get refund amount from payment request
+        // Get capture amount from payment
         $payment = $paymentRequest->getPayment();
         $amount = $payment->getAmount();
 
@@ -66,14 +67,19 @@ final readonly class RefundPaymentRequestHandler
             return;
         }
 
-        // Execute refund at GoPay
-        $goPayResponse = $this->goPayApi->refund($externalPaymentId, $amount);
+        // Get authorized amount from original request
+        $authorizedAmount = $this->getAuthorizedAmount($authorizePayload);
 
-        // Store refund information in payload
+        // Determine if full or partial capture
+        $goPayResponse = ($amount >= $authorizedAmount)
+            ? $this->goPayApi->captureAuthorization($externalPaymentId)
+            : $this->goPayApi->captureAuthorizationPartial($externalPaymentId, $amount);
+
+        // Store capture information in payload
         $payload = [
             PaymentConstants::EXTERNAL_PAYMENT_ID => $externalPaymentId,
-            PaymentConstants::REFUND_ID => $goPayResponse->json['id'] ?? null,
-            'refund_state' => $goPayResponse->json['result'] ?? null,
+            'capture_result' => $goPayResponse->json['result'] ?? null,
+            'capture_state' => $goPayResponse->json['state'] ?? null,
         ];
         $paymentRequest->setPayload($payload);
 
@@ -81,26 +87,40 @@ final readonly class RefundPaymentRequestHandler
         $responseData = $goPayResponse->json;
         $paymentRequest->setResponseData($responseData);
 
-        // Check if refund was successful
+        // Check if capture was successful
         $result = $goPayResponse->json['result'] ?? null;
-        if ($result === 'FINISHED') {
+        if ($result === GoPayApiInterface::RESULT_FINISHED) {
             $this->completePaymentRequest($paymentRequest);
         } else {
             $this->failPaymentRequest($paymentRequest);
         }
     }
 
-    private function findCaptureRequest(PaymentRequestInterface $paymentRequest): ?PaymentRequestInterface
+    private function findAuthorizeRequest(PaymentRequestInterface $paymentRequest): ?PaymentRequestInterface
     {
         $payment = $paymentRequest->getPayment();
 
         foreach ($payment->getPaymentRequests() as $request) {
-            if ($request->getAction() === PaymentRequestInterface::ACTION_CAPTURE) {
+            if (in_array($request->getAction(), [
+                PaymentRequestInterface::ACTION_CAPTURE,
+                PaymentRequestInterface::ACTION_AUTHORIZE,
+            ], true)) {
                 return $request;
             }
         }
 
         return null;
+    }
+
+    /**
+     * @param array<string, mixed> $authorizePayload
+     */
+    private function getAuthorizedAmount(array $authorizePayload): int
+    {
+        // The amount is stored in the payload from CapturePaymentRequestHandler
+        return isset($authorizePayload['amount']) && is_int($authorizePayload['amount'])
+            ? $authorizePayload['amount']
+            : 0;
     }
 
     private function completePaymentRequest(PaymentRequestInterface $paymentRequest): void

@@ -16,8 +16,8 @@ class GoPayPaymentsFactory implements GoPayPaymentsFactoryInterface
     public const SANDBOX_TEST_GATEWAY_URL = 'https://gw.sandbox.gopay.com/api';
 
     public function __construct(
-        private string $productionGatewayUrl = self::PRODUCTION_GATEWAY_URL,
-        private string $sandboxTestGatewayUrl = self::SANDBOX_TEST_GATEWAY_URL,
+        private readonly string $productionGatewayUrl = self::PRODUCTION_GATEWAY_URL,
+        private readonly string $sandboxTestGatewayUrl = self::SANDBOX_TEST_GATEWAY_URL,
     ) {
     }
 

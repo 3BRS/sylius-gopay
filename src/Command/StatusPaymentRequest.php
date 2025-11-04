@@ -15,8 +15,8 @@ class StatusPaymentRequest implements PaymentRequestHashAwareInterface
 {
     use PaymentRequestHashAwareTrait;
 
-    public function __construct(?string $hash)
+    public function __construct(?string $paymentIdAsHash)
     {
-        $this->hash = $hash;
+        $this->hash = $paymentIdAsHash;
     }
 }

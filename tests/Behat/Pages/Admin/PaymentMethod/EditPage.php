@@ -10,7 +10,30 @@ final class EditPage extends BaseUpdatePage implements EditPageInterface
 {
     public function setIsProductionMode(bool $value): void
     {
-        $this->getElement('isProductionMode')->selectOption($value ? '1' : '0');
+        if ($value) {
+            $this->getElement('isProductionMode')->check();
+        } else {
+            $this->getElement('isProductionMode')->uncheck();
+        }
+    }
+
+    public function setUseAuthorize(bool $value): void
+    {
+        if ($value) {
+            $this->getElement('useAuthorize')->check();
+        } else {
+            $this->getElement('useAuthorize')->uncheck();
+        }
+    }
+
+    public function isUseAuthorizeChecked(): bool
+    {
+        return $this->getElement('useAuthorize')->isChecked();
+    }
+
+    public function isProductionModeChecked(): bool
+    {
+        return $this->getElement('isProductionMode')->isChecked();
     }
 
     public function setGoPayGoId(string $value): void
@@ -32,6 +55,7 @@ final class EditPage extends BaseUpdatePage implements EditPageInterface
     {
         return array_merge(parent::getDefinedElements(), [
             'isProductionMode' => '#sylius_admin_payment_method_gatewayConfig_config_isProductionMode',
+            'useAuthorize' => '#sylius_admin_payment_method_gatewayConfig_config_useAuthorize',
             'goid' => '#sylius_admin_payment_method_gatewayConfig_config_goid',
             'clientId' => '#sylius_admin_payment_method_gatewayConfig_config_clientId',
             'clientSecret' => '#sylius_admin_payment_method_gatewayConfig_config_clientSecret',

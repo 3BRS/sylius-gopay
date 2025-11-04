@@ -58,35 +58,37 @@ final readonly class NotifyPaymentRequestHandler
         // Retrieve current payment status from GoPay
         $goPayResponse = $this->goPayApi->retrieve($externalPaymentId);
 
-        if ($goPayResponse === null) {
-            $this->failPaymentRequest($paymentRequest);
-
-            return;
-        }
-
         // Store external payment ID in payload for future reference
         $payload = $paymentRequest->getPayload() ?? [];
+        assert(is_array($payload) || $payload instanceof \ArrayAccess);
         $payload[PaymentConstants::EXTERNAL_PAYMENT_ID] = $externalPaymentId;
         $payload[PaymentConstants::GOPAY_STATUS] = $goPayResponse->json['state'] ?? null;
         $paymentRequest->setPayload($payload);
 
-        // Check if payment is successful
-        if ($this->isPaymentSuccessful($goPayResponse)) {
+        // Check payment status and transition accordingly
+        if ($this->isPaymentPaid($goPayResponse)) {
             $this->completePaymentRequest($paymentRequest);
             $this->completePayment($paymentRequest);
+        } elseif ($this->isPaymentAuthorized($goPayResponse)) {
+            $this->completePaymentRequest($paymentRequest);
+            $this->authorizePayment($paymentRequest);
         } else {
             $this->failPaymentRequest($paymentRequest);
         }
     }
 
-    private function isPaymentSuccessful(Response $goPayResponse): bool
+    private function isPaymentPaid(Response $goPayResponse): bool
     {
         $state = $goPayResponse->json['state'] ?? null;
 
-        return in_array($state, [
-            GoPayApiInterface::PAID,
-            GoPayApiInterface::AUTHORIZED,
-        ], true);
+        return $state === GoPayApiInterface::PAID;
+    }
+
+    private function isPaymentAuthorized(Response $goPayResponse): bool
+    {
+        $state = $goPayResponse->json['state'] ?? null;
+
+        return $state === GoPayApiInterface::AUTHORIZED;
     }
 
     private function completePaymentRequest(PaymentRequestInterface $paymentRequest): void
@@ -107,7 +109,6 @@ final readonly class NotifyPaymentRequestHandler
     private function completePayment(PaymentRequestInterface $paymentRequest): void
     {
         $payment = $paymentRequest->getPayment();
-        assert($payment !== null, 'Payment must not be null when processing successful payment request');
 
         if ($this->stateMachine->can(
             $payment,
@@ -118,6 +119,23 @@ final readonly class NotifyPaymentRequestHandler
                 $payment,
                 PaymentTransitions::GRAPH,
                 PaymentTransitions::TRANSITION_COMPLETE,
+            );
+        }
+    }
+
+    private function authorizePayment(PaymentRequestInterface $paymentRequest): void
+    {
+        $payment = $paymentRequest->getPayment();
+
+        if ($this->stateMachine->can(
+            $payment,
+            PaymentTransitions::GRAPH,
+            PaymentTransitions::TRANSITION_AUTHORIZE,
+        )) {
+            $this->stateMachine->apply(
+                $payment,
+                PaymentTransitions::GRAPH,
+                PaymentTransitions::TRANSITION_AUTHORIZE,
             );
         }
     }
@@ -143,8 +161,11 @@ final readonly class NotifyPaymentRequestHandler
     private function authorizeGoPayApi(array $gatewayConfig): void
     {
         $this->goPayApi->authorize(
+            // @phpstan-ignore-next-line
             goId: (string) ($gatewayConfig['goid'] ?? ''),
+            // @phpstan-ignore-next-line
             clientId: (string) ($gatewayConfig['clientId'] ?? ''),
+            // @phpstan-ignore-next-line
             clientSecret: (string) ($gatewayConfig['clientSecret'] ?? ''),
             isProductionMode: (bool) ($gatewayConfig['isProductionMode'] ?? false),
         );

@@ -59,6 +59,8 @@
 			<argument type="service" id="sylius_abstraction.state_machine" />
 			<argument type="service" id="threebrs.gopay.payments.factory" />
 			<argument type="service" id="sylius.behat.shared_storage" />
+			<argument type="service" id="sylius.factory.payment_request" />
+			<argument type="service" id="sylius.repository.payment_request" />
         </service>
 
     </services>

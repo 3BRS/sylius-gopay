@@ -5,7 +5,16 @@
 
     <div class="mb-3">
         {{ form_row(form.gatewayConfig.config.isProductionMode, {
-            'label': 'threebrs.gopay_plugin.is_production_mode'|trans
+            'label': 'threebrs.gopay_plugin.is_production_mode'|trans,
+            'label_attr': { 'class': 'checkbox-switch' }
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.gatewayConfig.config.useAuthorize, {
+            'label': 'threebrs.gopay_plugin.use_authorize'|trans,
+            'help': 'threebrs.gopay_plugin.use_authorize_help'|trans,
+            'label_attr': { 'class': 'checkbox-switch' }
         }) }}
     </div>
 

@@ -1,4 +1,4 @@
-@refund_order
+@refunding_order_payment
 Feature: Refunding order's payment
     In order to refund order's payment
     As an Administrator

@@ -10,6 +10,12 @@ interface EditPageInterface extends BaseUpdatePageInterface
 {
     public function setIsProductionMode(bool $value): void;
 
+    public function setUseAuthorize(bool $value): void;
+
+    public function isUseAuthorizeChecked(): bool;
+
+    public function isProductionModeChecked(): bool;
+
     public function setGoPayGoId(string $value): void;
 
     public function setGoPayClientId(string $value): void;

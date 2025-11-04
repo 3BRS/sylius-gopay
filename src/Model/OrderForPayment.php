@@ -59,10 +59,14 @@ final readonly class OrderForPayment
     public static function fromArray(array $data): self
     {
         return new self(
-            currency: $data['currency'] ?? '',
-            amount: $data['amount'] ?? 0,
-            orderNumber: $data['orderNumber'] ?? '',
-            customerData: $data['customerData'] ?? [],
+            // @phpstan-ignore-next-line
+            currency: (string) ($data['currency'] ?? ''),
+            // @phpstan-ignore-next-line
+            amount: (int) ($data['amount'] ?? 0),
+            // @phpstan-ignore-next-line
+            orderNumber: (string) ($data['orderNumber'] ?? ''),
+            // @phpstan-ignore-next-line
+            customerData: (array) ($data['customerData'] ?? []),
         );
     }
 }

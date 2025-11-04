@@ -1,0 +1,46 @@
+parameters:
+    threebrs.gopay.factories:
+        - gopay
+
+services:
+    # Abstract parent service with common dependencies
+    threebrs.gopay.state_machine.payment_state:
+        abstract: true
+        class: ThreeBRS\SyliusGoPayPlugin\StateMachine\PaymentStateProcessor
+        arguments:
+            $gatewayFactoryNameProvider: '@sylius.provider.payment_request.gateway_factory_name'
+            $finalizedPaymentRequestChecker: '@sylius.checker.finalized_payment_request'
+            $paymentRequestFactory: '@sylius.factory.payment_request'
+            $paymentRequestRepository: '@sylius.repository.payment_request'
+            $paymentRequestAnnouncer: '@sylius.announcer.payment_request'
+            $supportedFactories: '%threebrs.gopay.factories%'
+
+    # Refund processor - creates REFUND payment request when payment is refunded
+    threebrs.gopay.state_machine.refund:
+        public: true
+        parent: threebrs.gopay.state_machine.payment_state
+        arguments:
+            $allowedPaymentFromStates: [] # (empty = all states allowed)
+            $requiredPaymentState: !php/const Sylius\Component\Payment\Model\PaymentInterface::STATE_REFUNDED
+            $paymentRequestAction: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_REFUND
+
+    # Cancel processor - creates CANCEL payment request when payment is cancelled
+    threebrs.gopay.state_machine.cancel:
+        public: true
+        parent: threebrs.gopay.state_machine.payment_state
+        arguments:
+            $allowedPaymentFromStates:
+                - !php/const Sylius\Component\Payment\Model\PaymentInterface::STATE_NEW
+                - !php/const Sylius\Component\Payment\Model\PaymentInterface::STATE_AUTHORIZED
+            $requiredPaymentState: !php/const Sylius\Component\Payment\Model\PaymentInterface::STATE_CANCELLED
+            $paymentRequestAction: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_CANCEL
+
+    # Capture authorized processor - creates payment request when authorized payment is completed
+    threebrs.gopay.state_machine.capture_authorized:
+        public: true
+        parent: threebrs.gopay.state_machine.payment_state
+        arguments:
+            $allowedPaymentFromStates:
+                - !php/const Sylius\Component\Payment\Model\PaymentInterface::STATE_AUTHORIZED
+            $requiredPaymentState: !php/const Sylius\Component\Payment\Model\PaymentInterface::STATE_COMPLETED
+            $paymentRequestAction: complete_authorized

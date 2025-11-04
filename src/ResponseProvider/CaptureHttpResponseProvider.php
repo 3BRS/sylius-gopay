@@ -74,7 +74,7 @@ final readonly class CaptureHttpResponseProvider implements HttpResponseProvider
             orderForPayment: $orderForPayment,
             order: $order,
             paymentRequest: $paymentRequest,
-            goid: $this->getGoId($gatewayConfig),
+            goId: $this->getGoId($gatewayConfig),
         );
 
         // Create payment at GoPay
@@ -111,7 +111,7 @@ final readonly class CaptureHttpResponseProvider implements HttpResponseProvider
         OrderForPayment $orderForPayment,
         OrderInterface $order,
         PaymentRequestInterface $paymentRequest,
-        string $goid,
+        string $goId,
     ): array {
         $notifyUrl = $this->router->generate(
             'sylius_shop_order_after_pay',
@@ -122,11 +122,15 @@ final readonly class CaptureHttpResponseProvider implements HttpResponseProvider
         $localeCode = $order->getLocaleCode() ?? 'en';
         $goPayLanguage = $this->mapLocaleToGoPayLanguage($localeCode);
 
+        // Check if we should use pre-authorization
+        $gatewayConfig = $paymentRequest->getMethod()->getGatewayConfig()?->getConfig() ?? [];
+        $useAuthorize = (bool) ($gatewayConfig['useAuthorize'] ?? false);
+
         $goPayOrder = [
             'currency' => $orderForPayment->getCurrency(),
             'target' => [
                 'type' => 'ACCOUNT',
-                'goid' => $goid,
+                'goid' => $goId,
             ],
             'amount' => $orderForPayment->getAmount(),
             'order_number' => $orderForPayment->getOrderNumber(),
@@ -136,6 +140,11 @@ final readonly class CaptureHttpResponseProvider implements HttpResponseProvider
                 'notification_url' => $notifyUrl,
             ],
         ];
+
+        // Add preauthorization flag if enabled
+        if ($useAuthorize) {
+            $goPayOrder['preauthorization'] = true;
+        }
 
         // Add payer contact information if available
         $customerData = $orderForPayment->getCustomerData();

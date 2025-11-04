@@ -1,3 +1,7 @@
+# 3.0
+- Add support for Sylius 2.0
+- Drop support for Sylius <=1.14
+
 # 2.3
 
 - Add support for Sylius 1.14

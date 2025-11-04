@@ -6,12 +6,12 @@ namespace ThreeBRS\SyliusGoPayPlugin\Command;
 
 use Sylius\Bundle\PaymentBundle\Command\PaymentRequestHashAwareInterface;
 use Sylius\Bundle\PaymentBundle\Command\PaymentRequestHashAwareTrait;
-use ThreeBRS\SyliusGoPayPlugin\CommandHandler\CancelPaymentRequestHandler;
+use ThreeBRS\SyliusGoPayPlugin\CommandHandler\CompleteAuthorizedPaymentRequestHandler;
 
 /**
- * Processed by @see CancelPaymentRequestHandler
+ * Processed by @see CompleteAuthorizedPaymentRequestHandler
  */
-class CancelPaymentRequest implements PaymentRequestHashAwareInterface
+final class CompleteAuthorizedPaymentRequest implements PaymentRequestHashAwareInterface
 {
     use PaymentRequestHashAwareTrait;
 

@@ -59,12 +59,6 @@ final readonly class CancelPaymentRequestHandler
         // Execute void authorization at GoPay
         $goPayResponse = $this->goPayApi->voidAuthorization($externalPaymentId);
 
-        if ($goPayResponse === null) {
-            $this->failPaymentRequest($paymentRequest);
-
-            return;
-        }
-
         // Store cancel information in payload
         $payload = [
             PaymentConstants::EXTERNAL_PAYMENT_ID => $externalPaymentId,
@@ -88,9 +82,6 @@ final readonly class CancelPaymentRequestHandler
     private function findCaptureRequest(PaymentRequestInterface $paymentRequest): ?PaymentRequestInterface
     {
         $payment = $paymentRequest->getPayment();
-        if ($payment === null) {
-            return null;
-        }
 
         foreach ($payment->getPaymentRequests() as $request) {
             if ($request->getAction() === PaymentRequestInterface::ACTION_CAPTURE) {
@@ -137,8 +128,11 @@ final readonly class CancelPaymentRequestHandler
     private function authorizeGoPayApi(array $gatewayConfig): void
     {
         $this->goPayApi->authorize(
+            // @phpstan-ignore-next-line
             goId: (string) ($gatewayConfig['goid'] ?? ''),
+            // @phpstan-ignore-next-line
             clientId: (string) ($gatewayConfig['clientId'] ?? ''),
+            // @phpstan-ignore-next-line
             clientSecret: (string) ($gatewayConfig['clientSecret'] ?? ''),
             isProductionMode: (bool) ($gatewayConfig['isProductionMode'] ?? false),
         );

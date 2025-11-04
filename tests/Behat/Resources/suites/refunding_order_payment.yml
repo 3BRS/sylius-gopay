@@ -1,6 +1,6 @@
 default:
     suites:
-        refund_order:
+        refunding_order_payment:
             contexts:
                 - sylius.behat.context.hook.doctrine_orm
 
@@ -55,4 +55,4 @@ default:
                 - Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup\OrderContext
 
             filters:
-                tags: "@refund_order && @ui"
+                tags: "@refunding_order_payment && @ui"
