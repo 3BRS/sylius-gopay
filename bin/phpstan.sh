@@ -8,6 +8,8 @@ cd "$(dirname "$DIR")"
 
 set -x
 
+# to avoid crash
+# [PHPStan\Symfony\XmlContainerNotExistsException]
 if [ ! -f tests/Application/var/cache/dev/Tests_ThreeBRS_SyliusGoPayPlugin_KernelDevDebugContainer.xml ]; then
   php bin/console --env=dev cache:warmup --no-optional-warmers
 fi
