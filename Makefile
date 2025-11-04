@@ -21,6 +21,8 @@ init:
 	./bin-docker/php ./bin/console assets:install
 	./bin-docker/yarn --cwd=tests/Application install --pure-lockfile
 	GULP_ENV=prod ./bin-docker/yarn --cwd=tests/Application build
+	./bin-docker/php ./bin/console --env="$(APP_ENV)" sylius:payment:generate-key --no-interaction
+	./bin-docker/php ./bin/console --env="$(APP_ENV)" lexik:jwt:generate-keypair --skip-if-exists --no-interaction
 	@make var
 
 init-tests:
@@ -40,9 +42,10 @@ init-tests:
 	./bin-docker/php ./bin/console --env=test doctrine:schema:update --force --complete --no-interaction
 	./bin-docker/php ./bin/console --env=test doctrine:migration:sync-metadata-storage
 	./bin-docker/php ./bin/console --env=test assets:install
-	./bin-docker/yarn install --pure-lockfile
 	./bin-docker/yarn --cwd=tests/Application install --pure-lockfile
 	GULP_ENV=prod ./bin-docker/yarn --cwd=tests/Application build
+	./bin-docker/php ./bin/console --env=test sylius:payment:generate-key --no-interaction
+	./bin-docker/php ./bin/console --env=test lexik:jwt:generate-keypair --skip-if-exists --no-interaction
 	@make var
 
 cache:
@@ -113,6 +116,8 @@ var:
 	docker compose run --rm --user root php chmod -R 0777 tests/Application/public/media
 
 fixtures: schema-reset bare-fixtures var
+
+static: phpstan ecs lint
 
 tests: static phpunit behat
 
