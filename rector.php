@@ -13,10 +13,11 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->skip([
         __DIR__ . '/tests/Application/var',
+        __DIR__ . '/tests/Application/node_modules',
     ]);
 
     // define sets of rules
     $rectorConfig->sets([
-        LevelSetList::UP_TO_PHP_80,
+        LevelSetList::UP_TO_PHP_82,
     ]);
 };

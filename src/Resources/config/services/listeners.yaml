@@ -1,0 +1,2 @@
+imports:
+    - { resource: 'listeners/workflow/sylius_payment.yaml' }

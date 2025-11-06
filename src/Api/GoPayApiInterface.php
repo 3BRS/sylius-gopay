@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Api;
+namespace ThreeBRS\SyliusGoPayPlugin\Api;
 
 use GoPay\Definition\Language;
 use GoPay\Definition\TokenScope;
@@ -62,4 +62,8 @@ interface GoPayApiInterface
         int $paymentId,
         int $amount,
     ): Response;
+
+    public function captureAuthorization(int $paymentId): Response;
+
+    public function captureAuthorizationPartial(int $paymentId, int $amount): Response;
 }

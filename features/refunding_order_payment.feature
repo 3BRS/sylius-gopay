@@ -1,4 +1,4 @@
-@refund_order
+@refunding_order_payment
 Feature: Refunding order's payment
     In order to refund order's payment
     As an Administrator
@@ -28,4 +28,4 @@ Feature: Refunding order's payment
         When I mark this order's payment as refunded
         Then GoPay should be requested to refund this order with this external payment ID
         And it should have payment with state refunded
-        And it's payment state should be refunded
+        And its payment state should be refunded

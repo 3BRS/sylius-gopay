@@ -1,133 +1,133 @@
+imports:
+    - { resource: 'services/state_machine.yaml' }
+    - { resource: 'services/listeners.yaml' }
+
 services:
     _defaults:
-        public: true
+        autowire: false
+        autoconfigure: false
+        public: false
 
-    threebrs.gopay_payum.gateway_factory:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\GoPayPaymentGatewayFactory
-
-    threebrs.gopay_payum.gateway_factory_builder:
-        class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
+    # API
+    threebrs.gopay.api:
+        class: ThreeBRS\SyliusGoPayPlugin\Api\GoPayApi
         arguments:
-            - '@threebrs.gopay_payum.gateway_factory'
+            $gopayPaymentsFactory: '@threebrs.gopay.payments.factory'
+
+    ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface:
+        alias: threebrs.gopay.api
+
+    # GoPay Payments Factory
+    threebrs.gopay.payments.factory:
+        class: ThreeBRS\SyliusGoPayPlugin\Factory\GoPayPaymentsFactory
+
+    ThreeBRS\SyliusGoPayPlugin\Factory\GoPayPaymentsFactoryInterface:
+        alias: threebrs.gopay.payments.factory
+
+    # Form Type
+    threebrs.gopay.form.type.gateway_configuration:
+        class: ThreeBRS\SyliusGoPayPlugin\Form\Type\GoPayGatewayConfigurationType
         tags:
-            - { name: 'payum.gateway_factory_builder', factory: 'gopay' }
-
-    threebrs.gopay_payum.api:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Api\GoPayApi
-        arguments:
-            $gopayPaymentsFactory: '@threebrs.gopay_payum.payments.factory'
-
-    ThreeBRS\SyliusGoPayPayumPlugin\Api\GoPayApiInterface:
-        alias: threebrs.gopay_payum.api
-
-    threebrs.gopay_payum.form.type.gateway_configuration:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Form\Type\GoPayPayumGatewayConfigurationType
-        tags:
-            - { name: 'sylius.gateway_configuration_type', type: 'gopay', label: 'threebrs.gopay_payum_plugin.gateway_label' }
+            - { name: 'sylius.gateway_configuration_type', type: 'gopay', label: 'threebrs.gopay_plugin.gateway_label' }
             - { name: 'form.type' }
 
-    threebrs.gopay_payum.action.capture:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\CaptureAction
-        tags:
-            - { name: 'payum.action', factory: 'gopay' }
-
-    threebrs.gopay_payum.action.convert_payment:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\ConvertPaymentAction
-        tags:
-            - { name: 'payum.action', factory: 'gopay' }
-
-    threebrs.gopay_payum.action.gopay:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\GoPayAction
+    # Payment Request - Command Providers
+    threebrs.command_provider.payment_request.gopay:
+        class: Sylius\Bundle\PaymentBundle\CommandProvider\ActionsCommandProvider
         arguments:
-            $goPayApi: '@threebrs.gopay_payum.api'
-            $payum: '@payum'
-            $logger: '@logger'
+            - !tagged_locator
+                tag: threebrs.command_provider.payment_request.gopay
+                index_by: 'action'
         tags:
-            - { name: 'payum.action', factory: 'gopay' }
+            - { name: sylius.payment_request.command_provider, gateway_factory: 'gopay' }
 
-    threebrs.gopay_payum.action.notify:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\NotifyAction
-        arguments:
-            $goPayApi: '@threebrs.gopay_payum.api'
-            $logger: '@logger'
+    threebrs.command_provider.payment_request.gopay.capture:
+        class: ThreeBRS\SyliusGoPayPlugin\CommandProvider\CapturePaymentRequestCommandProvider
         tags:
-            - { name: 'payum.action', factory: 'gopay' }
+            - { name: threebrs.command_provider.payment_request.gopay, action: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_CAPTURE }
 
-    threebrs.gopay_payum.action.refund:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\RefundAction
+    threebrs.command_provider.payment_request.gopay.notify:
+        class: ThreeBRS\SyliusGoPayPlugin\CommandProvider\NotifyPaymentRequestCommandProvider
         arguments:
-            - '@threebrs.gopay_payum.api'
+            - '@request_stack'
         tags:
-            - { name: 'payum.action', factory: 'gopay' }
+            - { name: threebrs.command_provider.payment_request.gopay, action: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_NOTIFY }
 
-    threebrs.gopay_payum.action.cancel:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\CancelAction
-        arguments:
-            - '@threebrs.gopay_payum.api'
+    threebrs.command_provider.payment_request.gopay.status:
+        class: ThreeBRS\SyliusGoPayPlugin\CommandProvider\StatusPaymentRequestCommandProvider
         tags:
-            - { name: 'payum.action', factory: 'gopay' }
+            - { name: threebrs.command_provider.payment_request.gopay, action: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_STATUS }
 
-    threebrs.gopay_payum.action.status:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\Action\StatusAction
+    threebrs.command_provider.payment_request.gopay.refund:
+        class: ThreeBRS\SyliusGoPayPlugin\CommandProvider\RefundPaymentRequestCommandProvider
         tags:
-            - { name: 'payum.action', factory: 'gopay' }
+            - { name: threebrs.command_provider.payment_request.gopay, action: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_REFUND }
 
-    threebrs.gopay_payum.state_machine.refund:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\StateMachine\RefundOrderProcessor
-        arguments:
-            $commandBus: '@sylius.command_bus'
-
-    threebrs.gopay_payum.state_machine.cancel:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\StateMachine\CancelOrderProcessor
-        arguments:
-            $commandBus: '@sylius.command_bus'
-
-    threebrs.gopay_payum.command.handler.refund:
-        public: true
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Message\CommandHandler\RefundPaymentHandler
-        arguments:
-            $refundRequestFactory: '@threebrs.gopay_payum.request.factory.refund'
-            $captureRequestFactory: '@threebrs.gopay_payum.request.factory.capture'
-            $payum: '@payum'
-            $paymentRepository: '@sylius.repository.payment'
-            $supportedGateways: [ 'gopay' ]
+    threebrs.command_provider.payment_request.gopay.cancel:
+        class: ThreeBRS\SyliusGoPayPlugin\CommandProvider\CancelPaymentRequestCommandProvider
         tags:
-            -   name: messenger.message_handler
-                bus: sylius.command_bus
+            - { name: threebrs.command_provider.payment_request.gopay, action: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_CANCEL }
 
-    threebrs.gopay_payum.command.handler.cancel:
-        public: true
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Message\CommandHandler\CancelPaymentHandler
-        arguments:
-            $cancelRequestFactory: '@threebrs.gopay_payum.request.factory.cancel'
-            $payum: '@payum'
-            $paymentRepository: '@sylius.repository.payment'
-            $logger: '@logger'
-            $supportedGateways: [ 'gopay' ]
+    threebrs.command_provider.payment_request.gopay.complete_authorized:
+        class: ThreeBRS\SyliusGoPayPlugin\CommandProvider\CompleteAuthorizedPaymentRequestCommandProvider
         tags:
-            -   name: messenger.message_handler
-                bus: sylius.command_bus
+            - { name: threebrs.command_provider.payment_request.gopay, action: complete_authorized }
 
-    threebrs.gopay_payum.request.factory.capture:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\Factory\CaptureRequestFactory
+    # Payment Request - HTTP Response Providers
+    threebrs.provider.order_pay.http_response.gopay:
+        class: Sylius\Bundle\PaymentBundle\Provider\ActionsHttpResponseProvider
+        arguments:
+            - !tagged_locator
+                tag: threebrs.provider.http_response.gopay
+                index_by: action
+        tags:
+            - { name: sylius.payment_request.provider.http_response, gateway_factory: 'gopay' }
 
-    ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\Factory\CaptureRequestFactoryInterface:
-        alias: threebrs.gopay_payum.request.factory.capture
+    threebrs.provider.order_pay.http_response.gopay.capture:
+        class: ThreeBRS\SyliusGoPayPlugin\ResponseProvider\CaptureHttpResponseProvider
+        arguments:
+            - '@threebrs.gopay.api'
+            - '@router'
+        tags:
+            - { name: threebrs.provider.http_response.gopay, action: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_CAPTURE }
 
-    threebrs.gopay_payum.request.factory.refund:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\Factory\RefundRequestFactory
+    threebrs.provider.order_pay.http_response.gopay.status:
+        class: ThreeBRS\SyliusGoPayPlugin\ResponseProvider\StatusHttpResponseProvider
+        arguments:
+            - '@router'
+        tags:
+            - { name: threebrs.provider.http_response.gopay, action: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_STATUS }
 
-    ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\Factory\RefundRequestFactoryInterface:
-        alias: threebrs.gopay_payum.request.factory.refund
+    # Payment Request - Command Handlers (autoconfigured with Symfony Messenger)
+    ThreeBRS\SyliusGoPayPlugin\CommandHandler\CapturePaymentRequestHandler:
+        autoconfigure: true
+        autowire: true
 
-    threebrs.gopay_payum.request.factory.cancel:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\Factory\CancelRequestFactory
+    ThreeBRS\SyliusGoPayPlugin\CommandHandler\NotifyPaymentRequestHandler:
+        autoconfigure: true
+        autowire: true
 
-    ThreeBRS\SyliusGoPayPayumPlugin\Payum\Request\Factory\CancelRequestFactoryInterface:
-        alias: threebrs.gopay_payum.request.factory.cancel
+    ThreeBRS\SyliusGoPayPlugin\CommandHandler\StatusPaymentRequestHandler:
+        autoconfigure: true
+        autowire: true
 
-    threebrs.gopay_payum.payments.factory:
-        class: ThreeBRS\SyliusGoPayPayumPlugin\Payum\GoPayPaymentsFactory
+    ThreeBRS\SyliusGoPayPlugin\CommandHandler\RefundPaymentRequestHandler:
+        autoconfigure: true
+        autowire: true
 
-    ThreeBRS\SyliusGoPayPayumPlugin\Payum\GoPayPaymentsFactoryInterface:
-        alias: threebrs.gopay_payum.payments.factory
+    ThreeBRS\SyliusGoPayPlugin\CommandHandler\CancelPaymentRequestHandler:
+        autoconfigure: true
+        autowire: true
+
+    ThreeBRS\SyliusGoPayPlugin\CommandHandler\CompleteAuthorizedPaymentRequestHandler:
+        autoconfigure: true
+        autowire: true
+
+    # Order Number Provider
+    threebrs.gopay.provider.order_number:
+        class: ThreeBRS\SyliusGoPayPlugin\Provider\GoPayOrderNumberProvider
+        arguments:
+            - '@clock'
+
+    ThreeBRS\SyliusGoPayPlugin\Provider\GoPayOrderNumberProviderInterface:
+        alias: threebrs.gopay.provider.order_number

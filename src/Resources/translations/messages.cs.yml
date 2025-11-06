@@ -1,7 +1,9 @@
 threebrs:
-    gopay_payum_plugin:
+    gopay_plugin:
         client_id: Client ID
         client_secret: Client secret
         gateway_label: GoPay
         goid: Go ID
         is_production_mode: Produkční režim
+        use_authorize: Platby pouze rezervovat
+        use_authorize_help: Částka je pouze rezervována, nikoli okamžitě stržena. Ke skutečnému stržení a připsání na účet obchodníka dojde až při ručním označení platby v adminu jako "Dokončeno".

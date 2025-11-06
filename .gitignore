@@ -1,7 +1,21 @@
-/.idea
+/vendor/
+/node_modules/
 /composer.lock
-/vendor
 /.env
+/.envrc
+
+/etc/build/*
+!/etc/build/.gitkeep
+
+/tests/Application/yarn.lock
+
+
+/compose.override.yaml
+/deploy/
+/docker/
+/etc
+
+yarn-error.log
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -10,14 +24,20 @@
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
-/vendor/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
 /phpunit.xml
-.phpunit.result.cache
+/.phpunit.cache/
 ###< phpunit/phpunit ###
+
+###> symfony/webpack-encore-bundle ###
+/public/build/
+npm-debug.log
+###< symfony/webpack-encore-bundle ###
 
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
+
+.phpunit.result.cache

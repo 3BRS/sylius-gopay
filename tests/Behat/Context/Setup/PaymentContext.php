@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Setup;
+namespace Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Doctrine\Persistence\ObjectManager;
@@ -11,35 +11,10 @@ use Sylius\Bundle\CoreBundle\Fixture\Factory\ExampleFactoryInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Payment\Repository\PaymentMethodRepositoryInterface;
 
-final class PaymentContext implements Context
+final readonly class PaymentContext implements Context
 {
-    /** @var SharedStorageInterface */
-    private $sharedStorage;
-
-    /** @var PaymentMethodRepositoryInterface */
-    private $paymentMethodRepository;
-
-    /** @var ExampleFactoryInterface */
-    private $paymentMethodExampleFactory;
-
-    /** @var ObjectManager */
-    private $paymentMethodManager;
-
-    /** @var array */
-    private $gatewayFactories;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        PaymentMethodRepositoryInterface $paymentMethodRepository,
-        ExampleFactoryInterface $paymentMethodExampleFactory,
-        ObjectManager $paymentMethodManager,
-        array $gatewayFactories,
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->paymentMethodRepository = $paymentMethodRepository;
-        $this->paymentMethodExampleFactory = $paymentMethodExampleFactory;
-        $this->paymentMethodManager = $paymentMethodManager;
-        $this->gatewayFactories = $gatewayFactories;
+    public function __construct(private SharedStorageInterface $sharedStorage, private PaymentMethodRepositoryInterface $paymentMethodRepository, private ExampleFactoryInterface $paymentMethodExampleFactory, private ObjectManager $paymentMethodManager, private array $gatewayFactories)
+    {
     }
 
     /**
@@ -55,6 +30,25 @@ final class PaymentContext implements Context
             'clientId' => 'TEST',
             'clientSecret' => 'TEST',
             'isProductionMode' => false,
+        ]);
+
+        $this->paymentMethodManager->flush();
+    }
+
+    /**
+     * @Given the store allows paying with name :paymentMethodName and code :paymentMethodCode GoPay gateway with pre-authorization enabled
+     */
+    public function theStoreHasPaymentMethodWithCodeAndGoPayCheckoutGatewayWithPreAuthorizationEnabled(
+        string $paymentMethodName,
+        string $paymentMethodCode,
+    ): void {
+        $paymentMethod = $this->createPaymentMethod($paymentMethodName, $paymentMethodCode, 'GoPay');
+        $paymentMethod->getGatewayConfig()->setConfig([
+            'goid' => 'TEST',
+            'clientId' => 'TEST',
+            'clientSecret' => 'TEST',
+            'isProductionMode' => false,
+            'useAuthorize' => true,
         ]);
 
         $this->paymentMethodManager->flush();

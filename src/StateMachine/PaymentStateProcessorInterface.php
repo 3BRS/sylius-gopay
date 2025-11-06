@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\StateMachine;
+namespace ThreeBRS\SyliusGoPayPlugin\StateMachine;
 
 use Sylius\Component\Core\Model\PaymentInterface;
 

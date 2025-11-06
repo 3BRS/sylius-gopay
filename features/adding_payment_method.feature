@@ -18,6 +18,17 @@ Feature: Adding a new payment method
 		Then I should be notified that it has been successfully created
 		And the payment method "GoPay" should appear in the registry
 
+		# Disabled because Sylius does not yet support capturing of authorized (reserved) payment out of the box.
+#	@ui
+#	Scenario: Adding a new GoPay payment method with authorize payment only enabled
+#		Given I want to create a new payment method with "GoPay" gateway factory
+#		When I name it "GoPay with Pre-authorization" in "English (United States)"
+#		And I specify its code as "gopay_preauth"
+#		And I configure it with test GoPay credentials and enable pre-authorization
+#		And I add it
+#		Then I should be notified that it has been successfully created
+#		And the payment method "GoPay with Pre-authorization" should appear in the registry
+
 	@ui
 	Scenario: Adding a new payment method
 		When I want to create a new offline payment method

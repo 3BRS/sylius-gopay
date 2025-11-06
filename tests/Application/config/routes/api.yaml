@@ -1,2 +1,0 @@
-api:
-    resource: '../../../../vendor/api-platform/core/src/Symfony/Bundle/Resources/config/routing/docs.xml'

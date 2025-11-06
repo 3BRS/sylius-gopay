@@ -2,13 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Pages\Admin\PaymentMethod;
+namespace Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod;
 
-use Sylius\Behat\Page\Admin\Channel\UpdatePageInterface as BaseUpdatePageInterface;
+use Sylius\Behat\Page\Admin\PaymentMethod\UpdatePageInterface as BaseUpdatePageInterface;
 
 interface EditPageInterface extends BaseUpdatePageInterface
 {
     public function setIsProductionMode(bool $value): void;
+
+    public function setUseAuthorize(bool $value): void;
+
+    public function isUseAuthorizeChecked(): bool;
+
+    public function isProductionModeChecked(): bool;
 
     public function setGoPayGoId(string $value): void;
 

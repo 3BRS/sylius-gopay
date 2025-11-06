@@ -1,0 +1,27 @@
+services:
+    # Cancel workflow listener - listens to payment cancel transition
+    threebrs.gopay.event_listener.workflow.payment_complete_state.cancel:
+        class: ThreeBRS\SyliusGoPayPlugin\EventListener\Workflow\PaymentFromCompletedStateListener
+        arguments:
+            - '@threebrs.gopay.state_machine.cancel'
+        tags:
+            - name: kernel.event_listener
+              event: workflow.sylius_payment.completed.cancel
+
+    # Refund workflow listener - listens to payment refund transition
+    threebrs.gopay.event_listener.workflow.payment_complete_state.refund:
+        class: ThreeBRS\SyliusGoPayPlugin\EventListener\Workflow\PaymentFromCompletedStateListener
+        arguments:
+            - '@threebrs.gopay.state_machine.refund'
+        tags:
+            - name: kernel.event_listener
+              event: workflow.sylius_payment.completed.refund
+
+    # Capture authorized workflow listener - listens to payment complete transition (when coming from AUTHORIZED state)
+    threebrs.gopay.event_listener.workflow.payment_complete_state.complete_authorized:
+        class: ThreeBRS\SyliusGoPayPlugin\EventListener\Workflow\PaymentFromCompletedStateListener
+        arguments:
+            - '@threebrs.gopay.state_machine.capture_authorized'
+        tags:
+            - name: kernel.event_listener
+              event: workflow.sylius_payment.completed.complete

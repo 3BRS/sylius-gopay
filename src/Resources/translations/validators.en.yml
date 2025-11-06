@@ -1,5 +1,5 @@
 threebrs:
-    gopay_payum_plugin:
+    gopay_plugin:
         gateway_configuration:
             client_id:
                 not_blank: Please enter Client ID

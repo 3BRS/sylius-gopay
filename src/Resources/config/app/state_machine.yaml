@@ -1,0 +1,2 @@
+# GoPay payment callbacks for Sylius payment workflow
+# Using services.yml configuration for Symfony Workflow event listeners

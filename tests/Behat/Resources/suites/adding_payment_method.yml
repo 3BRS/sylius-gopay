@@ -23,8 +23,8 @@ default:
                 - sylius.behat.context.transform.shared_storage
                 - sylius.behat.context.transform.shipping_method
 
-                - theebrs_sylius.gopay_payum.behat.context.ui.admin.managing_payment_methods
-                - Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Ui\Admin\ManagingPaymentMethodsContext
+                - theebrs_sylius.gopay.behat.context.ui.admin.managing_payment_methods
+                - Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Ui\Admin\ManagingPaymentMethodsContext
                 - sylius.behat.context.ui.admin.notification
                 - sylius.behat.context.ui.shop.locale
 

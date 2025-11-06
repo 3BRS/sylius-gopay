@@ -28,7 +28,7 @@ composer require 3brs/sylius-gopay-payum-plugin
 Add plugin dependencies to your bundles.php file:
 
 ```php
-ThreeBRS\SyliusGoPayPayumPlugin\SyliusGoPayPayumPlugin::class => ['all' => true]
+ThreeBRS\SyliusGoPayPlugin\ThreeBRSSyliusGoPayPlugin::class => ['all' => true]
 ```
 
 ## Usage

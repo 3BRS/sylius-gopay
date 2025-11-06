@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusGoPayPayumPlugin\Api;
+namespace ThreeBRS\SyliusGoPayPlugin\Api;
 
 use GoPay\Definition\Language;
 use GoPay\Definition\TokenScope;
 use GoPay\Http\Response;
 use GoPay\Payments;
-use ThreeBRS\SyliusGoPayPayumPlugin\Payum\GoPayPaymentsFactoryInterface;
+use ThreeBRS\SyliusGoPayPlugin\Factory\GoPayPaymentsFactoryInterface;
 
 final class GoPayApi implements GoPayApiInterface
 {
     private Payments $gopay;
 
     public function __construct(
-        private GoPayPaymentsFactoryInterface $gopayPaymentsFactory,
+        private readonly GoPayPaymentsFactoryInterface $gopayPaymentsFactory,
     ) {
     }
 
@@ -53,16 +53,19 @@ final class GoPayApi implements GoPayApiInterface
      */
     public function create(array $order): Response
     {
+        // @phpstan-ignore return.type
         return $this->gopay->createPayment($order);
     }
 
     public function retrieve(int $paymentId): Response
     {
+        // @phpstan-ignore return.type
         return $this->gopay->getStatus($paymentId);
     }
 
     public function voidAuthorization(int $paymentId): Response
     {
+        // @phpstan-ignore return.type
         return $this->gopay->voidAuthorization($paymentId);
     }
 
@@ -77,6 +80,33 @@ final class GoPayApi implements GoPayApiInterface
         int $paymentId,
         int $amount,
     ): Response {
+        // @phpstan-ignore return.type
         return $this->gopay->refundPayment($paymentId, $amount);
+    }
+
+    /**
+     * Capture the full amount of a pre-authorized payment
+     *
+     * @see https://doc.gopay.com/#pre-authorization
+     */
+    public function captureAuthorization(int $paymentId): Response
+    {
+        // @phpstan-ignore return.type
+        return $this->gopay->captureAuthorization($paymentId);
+    }
+
+    /**
+     * Capture a partial amount of a pre-authorized payment
+     *
+     * @see https://doc.gopay.com/#pre-authorization
+     *
+     * @param int $amount Amount to capture (must be less than or equal to authorized amount)
+     */
+    public function captureAuthorizationPartial(int $paymentId, int $amount): Response
+    {
+        // @phpstan-ignore return.type
+        return $this->gopay->captureAuthorizationPartial($paymentId, [
+            'amount' => $amount,
+        ]);
     }
 }

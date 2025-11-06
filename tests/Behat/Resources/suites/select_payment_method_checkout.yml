@@ -4,6 +4,7 @@ default:
             contexts:
                 - sylius.behat.context.hook.doctrine_orm
 
+                - sylius.behat.context.setup.cart
                 - sylius.behat.context.setup.channel
                 - sylius.behat.context.setup.currency
                 - sylius.behat.context.setup.customer
@@ -49,7 +50,7 @@ default:
                 - sylius.behat.context.ui.shop.checkout.complete
                 - sylius.behat.context.ui.shop.currency
 
-                - Tests\ThreeBRS\SyliusGoPayPayumPlugin\Behat\Context\Setup\PaymentContext
+                - Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup\PaymentContext
 
             filters:
                 tags: "@select_payment_method_checkout && @ui"

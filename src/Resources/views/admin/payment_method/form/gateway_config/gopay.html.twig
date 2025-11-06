@@ -1,0 +1,38 @@
+{% set form = hookable_metadata.context.form %}
+
+<div class="col-12 mt-5">
+    <h5>{{ 'threebrs.gopay_plugin.gateway_label'|trans }}</h5>
+
+    <div class="mb-3">
+        {{ form_row(form.gatewayConfig.config.isProductionMode, {
+            'label': 'threebrs.gopay_plugin.is_production_mode'|trans,
+            'label_attr': { 'class': 'checkbox-switch' }
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.gatewayConfig.config.useAuthorize, {
+            'label': 'threebrs.gopay_plugin.use_authorize'|trans,
+            'help': 'threebrs.gopay_plugin.use_authorize_help'|trans,
+            'label_attr': { 'class': 'checkbox-switch' }
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.gatewayConfig.config.goid, {
+            'label': 'threebrs.gopay_plugin.goid'|trans
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.gatewayConfig.config.clientId, {
+            'label': 'threebrs.gopay_plugin.client_id'|trans
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.gatewayConfig.config.clientSecret, {
+            'label': 'threebrs.gopay_plugin.client_secret'|trans
+        }) }}
+    </div>
+</div>
