@@ -28,7 +28,15 @@ composer require 3brs/sylius-gopay-plugin
 Add plugin dependencies to your bundles.php file:
 
 ```php
-ThreeBRS\SyliusGoPayPlugin\ThreeBRSSyliusGoPayPlugin::class => ['all' => true]
+// bundles.php
+ThreeBRS\SyliusGoPayPlugin\ThreeBRSSyliusGoPayPlugin::class => ['all' => true],
+```
+
+Include plugin configuration
+```yaml
+# config/_sylius.yaml
+imports:
+    - { resource: "@ThreeBRSSyliusGoPayPlugin/Resources/config/config.yaml" }
 ```
 
 ## Usage
