@@ -1,7 +1,7 @@
 {
-  "name": "3brs/sylius-gopay-plugin",
+  "name": "3brs/sylius-gopay",
   "replace": {
-    "3brs/sylius-gopay-payum-plugin": "self.version"
+    "3brs/sylius-gopay": "self.version"
   },
   "type": "sylius-plugin",
   "description": "GoPay payment gateway plugin for Sylius applications.",
