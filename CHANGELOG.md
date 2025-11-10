@@ -1,6 +1,12 @@
 # 3.0
 - Add support for Sylius 2.0
 - Drop support for Sylius <=1.14
+- Add support for payment authorization (reserve amount without immediate charge)
+- Migrate from Payum to Sylius 2.0 Payment Request system
+- Migrate from `winzou_state_machine` to Symfony Workflow
+- Rename package from `3brs/sylius-gopay-payum-plugin` to `3brs/sylius-gopay-plugin`
+
+For upgrade steps from Sylius 1 plugin `3brs/sylius-gopay-payum-plugin` to Sylius 2 plugin `3brs/sylius-gopay-plugin` see [UPGRADE-3.0.md](UPGRADE-3.0.md)
 
 # 2.3
 
