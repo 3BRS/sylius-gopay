@@ -3,10 +3,10 @@
     <a href="https://www.gopay.com" title="GoPay" target="_blank"><img src="https://dl.dropboxusercontent.com/s/af8fiebcqmk9wgm/GoPay-logo-varianta-A-PANTONE.png" width="300" /></a>
 </div>
 
-<a href="https://packagist.org/packages/3brs/sylius-gopay" title="License" target="_blank">
+<a href="https://packagist.org/packages/3brs/sylius-gopay-plugin" title="License" target="_blank">
     <img src="https://img.shields.io/packagist/l/3brs/sylius-gopay.svg" />
 </a>
-<a href="https://packagist.org/packages/3brs/sylius-gopay" title="Version" target="_blank">
+<a href="https://packagist.org/packages/3brs/sylius-gopay-plugin" title="Version" target="_blank">
     <img src="https://img.shields.io/packagist/v/3brs/sylius-gopay.svg" />
 </a>
 <a href="https://circleci.com/gh/3BRS/sylius-gopay" title="Build status" target="_blank">
@@ -22,7 +22,7 @@
 ## Installation
 Until pull request is merged, require it this way:
 ```bash
-composer require 3brs/sylius-gopay
+composer require 3brs/sylius-gopay-plugin
 ```
 
 Add plugin dependencies to your bundles.php file:
