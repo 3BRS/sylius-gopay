@@ -28,7 +28,7 @@ class GoPayPaymentsMock extends Payments
         $this->lastAmount = $data;
 
         /**
-         * @see \ThreeBRS\SyliusGoPayPlugin\Payum\Action\GoPayAction::processRefund
+         * @see \ThreeBRS\SyliusGoPayPlugin\CommandHandler\RefundPaymentRequestHandler::__invoke
          * for expected response
          */
         $data = ['id' => 3276091767, 'result' => 'FINISHED'];
@@ -47,10 +47,6 @@ class GoPayPaymentsMock extends Payments
 
         $this->lastPaymentId = $id;
 
-        /**
-         * @see \ThreeBRS\SyliusGoPayPlugin\Payum\Action\GoPayAction::processCapture()
-         * for expected response
-         */
         $data = ['orderId' => 1234, 'externalPaymentId' => 4567, 'state' => 'REFUNDED'];
         $json = json_encode($data);
         $response = new Response($json);
@@ -81,15 +77,15 @@ class GoPayPaymentsMock extends Payments
     }
 
     public function captureAuthorizationPartial(
-        $id,
-        $data,
+              $id,
+        array $capturePayment,
     ): Response {
         assert(is_int($id), 'Expected int, got ' . gettype($id));
-        assert(is_array($data) && isset($data['amount']), 'Expected array with amount key');
-        assert(is_int($data['amount']), 'Expected amount to be int, got ' . gettype($data['amount']));
+        assert(is_array($capturePayment) && isset($capturePayment['amount']), 'Expected array with amount key');
+        assert(is_int($capturePayment['amount']), 'Expected amount to be int, got ' . gettype($capturePayment['amount']));
 
         $this->lastPaymentId = $id;
-        $this->lastAmount = $data['amount'];
+        $this->lastAmount = $capturePayment['amount'];
 
         /**
          * Expected response for successful partial capture

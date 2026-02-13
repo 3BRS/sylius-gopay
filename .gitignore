@@ -3,12 +3,10 @@
 /composer.lock
 /.env
 /.envrc
+/composer.json.backup
 
 /etc/build/*
 !/etc/build/.gitkeep
-
-/tests/Application/yarn.lock
-
 
 /compose.override.yaml
 /deploy/
@@ -30,6 +28,10 @@ yarn-error.log
 /phpunit.xml
 /.phpunit.cache/
 ###< phpunit/phpunit ###
+
+###> behat/behat ###
+/behat.yml
+###< behat/behat ###
 
 ###> symfony/webpack-encore-bundle ###
 /public/build/

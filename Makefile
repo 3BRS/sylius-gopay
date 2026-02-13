@@ -7,7 +7,7 @@ run: init
 init:
 	which docker > /dev/null || (echo "Please install docker binary" && exit 1)
 	if command -v direnv >/dev/null; then \
-		cp --update=none .envrc.dist .envrc; \
+		[ -f .envrc ] || cp .envrc.dist .envrc; \
 		direnv allow; \
 	fi
 	docker compose up -d
@@ -16,19 +16,19 @@ init:
 	@make var
 	./bin-docker/php ./bin/console doctrine:database:create --no-interaction --if-not-exists
 	./bin-docker/php ./bin/console doctrine:migrations:migrate --no-interaction
-	./bin-docker/php ./bin/console doctrine:schema:update --force --complete --no-interaction
+	./bin-docker/php ./bin/console doctrine:schema:update --force --no-interaction
 	./bin-docker/php ./bin/console doctrine:migration:sync-metadata-storage
 	./bin-docker/php ./bin/console assets:install
 	./bin-docker/yarn --cwd=tests/Application install --pure-lockfile
 	GULP_ENV=prod ./bin-docker/yarn --cwd=tests/Application build
-	./bin-docker/php ./bin/console --env="$(APP_ENV)" sylius:payment:generate-key --no-interaction
-	./bin-docker/php ./bin/console --env="$(APP_ENV)" lexik:jwt:generate-keypair --skip-if-exists --no-interaction
+	./bin-docker/php ./bin/console sylius:payment:generate-key --no-interaction
+	./bin-docker/php ./bin/console lexik:jwt:generate-keypair --skip-if-exists --no-interaction
 	@make var
 
 init-tests:
 	which docker > /dev/null || (echo "Please install docker binary" && exit 1)
 	if command -v direnv >/dev/null; then \
-		cp --update=none .envrc.dist .envrc; \
+		[ -f .envrc ] || cp .envrc.dist .envrc; \
 		direnv allow; \
 	fi
 	docker compose up -d
@@ -37,9 +37,9 @@ init-tests:
 	rm -fr tests/Application/var/test
 	@make var
 	./bin-docker/php ./bin/console --env=test doctrine:database:drop --no-interaction --force --if-exists
-	./bin-docker/php ./bin/console --env=test doctrine:database:create --no-interaction --if-not-exists
+	./bin-docker/php ./bin/console --env=test doctrine:database:create --no-interaction
 	./bin-docker/php ./bin/console --env=test doctrine:migrations:migrate --no-interaction
-	./bin-docker/php ./bin/console --env=test doctrine:schema:update --force --complete --no-interaction
+	./bin-docker/php ./bin/console --env=test doctrine:schema:update --force --no-interaction
 	./bin-docker/php ./bin/console --env=test doctrine:migration:sync-metadata-storage
 	./bin-docker/php ./bin/console --env=test assets:install
 	./bin-docker/yarn --cwd=tests/Application install --pure-lockfile
@@ -93,10 +93,10 @@ yarn-build:
 yarn: yarn-build
 
 schema-reset:
-	./bin-docker/php ./bin/console doctrine:database:drop --force --if-exists
+	./bin-docker/php ./bin/console doctrine:database:drop --force --if-exists --no-interaction
 	./bin-docker/php ./bin/console doctrine:database:create --no-interaction
 	./bin-docker/php ./bin/console doctrine:migrations:migrate --no-interaction
-	./bin-docker/php ./bin/console doctrine:schema:update --force --complete --no-interaction
+	./bin-docker/php ./bin/console doctrine:schema:update --force --no-interaction
 	./bin-docker/php ./bin/console doctrine:migration:sync-metadata-storage
 
 fix:

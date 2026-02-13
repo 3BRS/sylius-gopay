@@ -1,20 +1,15 @@
 version: 2.1
 
 workflows:
-    sylius2.0-php8.2+:
+    sylius2.1-2.2-php8.2+:
         jobs:
             -   build:
                     name: php-<<matrix.php_version>>-sylius-<< matrix.sylius_version >>-symfony-<< matrix.symfony_version >>
                     matrix:
                         parameters:
-                            php_version:
-                                - "8.2"
-                                - "8.3"
-                            sylius_version:
-                                - "2.0"
-                            symfony_version:
-                                - "6.4"
-                                - "7.1"
+                            sylius_version: [ "2.1", "2.2" ]
+                            php_version: [ "8.2", "8.3" ]
+                            symfony_version: [ "7.4" ]
 jobs:
     build:
         parameters:
@@ -47,31 +42,12 @@ jobs:
 
             # Sylius & Symfony in current matrix versions
             -   run: composer require "sylius/sylius:<< parameters.sylius_version >>.*" --no-interaction --no-update --no-scripts
-            -   run: grep -o -E '"(symfony/[^"]+)"' composer.json | grep -v -E '(symfony/flex|symfony/webpack-encore-bundle)' | xargs printf '%s:<< parameters.symfony_version >>.* '| xargs composer require --no-interaction --no-update
+            -   run: grep -o -E '"(symfony/[^"]+)"' composer.json | grep -v -E '(symfony/flex|symfony/webpack-encore-bundle|symfony/maker-bundle|symfony/panther)' | xargs printf '%s:<< parameters.symfony_version >>.* '| xargs composer require --no-interaction --no-update
 
             -   run:
                     name: Wait for database
                     command: timeout 60s bash -c -- 'while ! nc -z 127.0.0.1 3306; do sleep 0.1; done' \
                         && timeout 30s bash -c -- 'mysql --user=sylius --password=pass --host=127.0.0.1 --port=3306 -e "exit"'
-
-            # COMPOSER PREFER LOWEST (oldest possible) #
-            # has to delete vendor for next test with different libraries version to avoid Composer error 'Failed to extract...' if vendor dir cache does not exist
-            -   run: rm -fr composer.lock
-            -   run: composer update --no-interaction --prefer-lowest --no-plugins
-            -   run: (cd tests/Application && bin/console assets:install --env=test -vvv)
-            -   run: yarn --cwd tests/Application install
-            -   run: yarn --cwd tests/Application build
-            -   run: (cd tests/Application && bin/console doctrine:database:create --if-not-exists --env=test -vvv)
-            -   run: (cd tests/Application && bin/console doctrine:schema:update --force --complete --env=test -vvv)
-            -   run: (cd tests/Application && bin/console cache:clear --env=test -vvv)
-            -   run: (cd tests/Application && bin/console cache:warmup --env=test -vvv)
-            -   run: bin/phpstan.sh
-            -   run: bin/ecs.sh --clear-cache
-            -   run: bin/symfony-lint.sh
-            -   run: (cd tests/Application && bin/console sylius:payment:generate-key --overwrite --quiet)
-            -   run: (cd tests/Application && bin/console lexik:jwt:generate-keypair  --overwrite --quiet)
-            -   run: bin/behat.sh
-            -   run: if [ -f tests/Application/var/log/test.log ]; then tail -n 50 tests/Application/var/log/test.log; fi
 
             # COMPOSER PREFER DIST #
             -   run: composer update --no-interaction --prefer-dist --no-plugins
@@ -87,5 +63,27 @@ jobs:
             -   run: bin/symfony-lint.sh
             -   run: (cd tests/Application && bin/console sylius:payment:generate-key --overwrite --quiet)
             -   run: (cd tests/Application && bin/console lexik:jwt:generate-keypair  --overwrite --quiet)
+            -   run: bin/phpunit
+            -   run: bin/behat.sh
+            -   run: if [ -f tests/Application/var/log/test.log ]; then tail -n 50 tests/Application/var/log/test.log; fi
+
+            # COMPOSER PREFER LOWEST (oldest possible) #
+            # has to delete vendor for next test with different libraries version to avoid Composer error 'Failed to extract...' if vendor dir cache does not exist
+            -   run: rm -fr composer.lock
+            -   run: composer update --no-interaction --prefer-lowest --no-plugins
+            -   run: (cd tests/Application && bin/console assets:install --env=test -vvv)
+            -   run: yarn --cwd tests/Application install
+            -   run: yarn --cwd tests/Application build
+            -   run: (cd tests/Application && bin/console doctrine:database:create --if-not-exists --env=test -vvv)
+            -   run: (cd tests/Application && bin/console doctrine:schema:update --force --complete --env=test -vvv)
+            -   run: rm -fr tests/Application/var/cache
+            -   run: (cd tests/Application && bin/console cache:clear --env=test -vvv)
+            -   run: (cd tests/Application && bin/console cache:warmup --env=test -vvv)
+            -   run: bin/phpstan.sh
+            -   run: bin/ecs.sh --clear-cache
+            -   run: bin/symfony-lint.sh
+            -   run: (cd tests/Application && bin/console sylius:payment:generate-key --overwrite --quiet)
+            -   run: (cd tests/Application && bin/console lexik:jwt:generate-keypair  --overwrite --quiet)
+            -   run: bin/phpunit
             -   run: bin/behat.sh
             -   run: if [ -f tests/Application/var/log/test.log ]; then tail -n 50 tests/Application/var/log/test.log; fi

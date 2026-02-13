@@ -148,7 +148,7 @@ final readonly class CaptureHttpResponseProvider implements HttpResponseProvider
 
         // Add payer contact information if available
         $customerData = $orderForPayment->getCustomerData();
-        if (!empty($customerData)) {
+        if ($customerData !== []) {
             $payerContact = [];
 
             if (isset($customerData['email'])) {
@@ -176,7 +176,7 @@ final readonly class CaptureHttpResponseProvider implements HttpResponseProvider
                 $payerContact['country_code'] = $customerData['countryCode'];
             }
 
-            if (!empty($payerContact)) {
+            if ($payerContact !== []) {
                 $goPayOrder['payer'] = [
                     'contact' => $payerContact,
                 ];
