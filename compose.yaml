@@ -1,6 +1,9 @@
 services:
     php:
-        build: ./.docker/php
+        build:
+            context: ./.docker/php
+            args:
+                PHP_VERSION: ${PHP_VERSION:-8.3}
         environment:
             APP_ENV: "dev"
             APP_DEBUG: "1"

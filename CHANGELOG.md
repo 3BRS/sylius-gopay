@@ -1,3 +1,13 @@
+# 3.1
+
+### Added
+- Support for Sylius 2.1
+- Support for Sylius 2.2
+
+### Changed
+- **BREAKING**: Drop support for Sylius 2.0
+- **BREAKING**: Drop support for Symfony 6.4
+
 # 3.0
 - Add support for Sylius 2.0
 - Drop support for Sylius <=1.14
