@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ThreeBRS\SyliusGoPayPlugin\ResponseProvider;
 
+use Doctrine\ORM\EntityManagerInterface;
 use GoPay\Definition\Language;
 use Sylius\Bundle\PaymentBundle\Provider\HttpResponseProviderInterface;
 use Sylius\Bundle\ResourceBundle\Controller\RequestConfiguration;
@@ -26,6 +27,7 @@ final readonly class CaptureHttpResponseProvider implements HttpResponseProvider
     public function __construct(
         private GoPayApiInterface $goPayApi,
         private RouterInterface $router,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -91,6 +93,9 @@ final readonly class CaptureHttpResponseProvider implements HttpResponseProvider
             /** @var array<string, mixed> $responseData */
             $responseData = $goPayResponse->json;
             $paymentRequest->setResponseData($responseData);
+
+            // Flush to persist payload changes (doctrine_transaction middleware has already committed)
+            $this->entityManager->flush();
 
             // Redirect to GoPay gateway
             $gwUrl = $goPayResponse->json['gw_url'] ?? null;

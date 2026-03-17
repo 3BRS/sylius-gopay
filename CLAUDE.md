@@ -8,6 +8,8 @@ All files and directories in `src/Resources/` **must be readable by the `www-dat
 ### Background
 When developing this plugin, we encountered an issue where Twig hooks configuration wasn't being loaded. The problem was that directories in `src/Resources/config/twig_hooks/` had restrictive permissions (700 - owner only), preventing PHP-FPM from reading them.
 
+Directories need both `+r` (to list contents) and `+x` (to traverse into them), so they require mode 755. Files only need `+r` for the "others" group — making files executable with `+x` is unnecessary and undesirable. Use `chmod 644` for files and `chmod 755` for directories. Do **not** use `chmod -R 755` as that makes all files executable too.
+
 ### Symptoms
 - Configuration files exist and are valid
 - `debug:config` shows the configuration is registered
@@ -18,12 +20,9 @@ When developing this plugin, we encountered an issue where Twig hooks configurat
 Ensure all files and directories in `src/Resources/` have appropriate permissions:
 
 ```bash
-# Fix permissions for the entire Resources directory
-chmod -R 755 src/Resources/
-
-# Or more specifically:
-# Directories: 755 (rwxr-xr-x) - readable and executable by everyone
-# Files: 644 (rw-r--r--) or 755 (rwxr-xr-x) - readable by everyone
+# Fix permissions in twig_hooks — directories get 755, files get 644
+find src/Resources/config/twig_hooks/ -type d -exec chmod 755 {} +
+find src/Resources/config/twig_hooks/ -type f -exec chmod 644 {} +
 ```
 
 ### Prevention
