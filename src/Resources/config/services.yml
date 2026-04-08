@@ -92,13 +92,6 @@ services:
         tags:
             - { name: threebrs.provider.http_response.gopay, action: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_CAPTURE }
 
-    threebrs.provider.order_pay.http_response.gopay.status:
-        class: ThreeBRS\SyliusGoPayPlugin\ResponseProvider\StatusHttpResponseProvider
-        arguments:
-            - '@router'
-        tags:
-            - { name: threebrs.provider.http_response.gopay, action: !php/const Sylius\Component\Payment\Model\PaymentRequestInterface::ACTION_STATUS }
-
     # Payment Request - Command Handlers (autoconfigured with Symfony Messenger)
     ThreeBRS\SyliusGoPayPlugin\CommandHandler\CapturePaymentRequestHandler:
         autoconfigure: true
@@ -121,6 +114,11 @@ services:
         autowire: true
 
     ThreeBRS\SyliusGoPayPlugin\CommandHandler\CompleteAuthorizedPaymentRequestHandler:
+        autoconfigure: true
+        autowire: true
+
+    # External Payment ID Resolver
+    ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolver:
         autoconfigure: true
         autowire: true
 
