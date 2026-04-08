@@ -12,6 +12,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
 use ThreeBRS\SyliusGoPayPlugin\Command\CancelPaymentRequest;
 use ThreeBRS\SyliusGoPayPlugin\Model\PaymentConstants;
+use ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolver;
 
 #[AsMessageHandler]
 final readonly class CancelPaymentRequestHandler
@@ -20,6 +21,7 @@ final readonly class CancelPaymentRequestHandler
         private PaymentRequestProviderInterface $paymentRequestProvider,
         private StateMachineInterface $stateMachine,
         private GoPayApiInterface $goPayApi,
+        private ExternalPaymentIdResolver $externalPaymentIdResolver,
     ) {
     }
 
@@ -42,9 +44,7 @@ final readonly class CancelPaymentRequestHandler
 
         /** @var array<string, mixed> $capturePayload */
         $capturePayload = $captureRequest->getPayload() ?? [];
-        $externalPaymentId = isset($capturePayload[PaymentConstants::EXTERNAL_PAYMENT_ID]) && is_int($capturePayload[PaymentConstants::EXTERNAL_PAYMENT_ID])
-            ? $capturePayload[PaymentConstants::EXTERNAL_PAYMENT_ID]
-            : null;
+        $externalPaymentId = $this->externalPaymentIdResolver->extractExternalPaymentId($capturePayload);
 
         if ($externalPaymentId === null) {
             $this->failPaymentRequest($paymentRequest);

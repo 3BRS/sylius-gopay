@@ -12,6 +12,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
 use ThreeBRS\SyliusGoPayPlugin\Command\CompleteAuthorizedPaymentRequest;
 use ThreeBRS\SyliusGoPayPlugin\Model\PaymentConstants;
+use ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolver;
 
 #[AsMessageHandler]
 final readonly class CompleteAuthorizedPaymentRequestHandler
@@ -20,6 +21,7 @@ final readonly class CompleteAuthorizedPaymentRequestHandler
         private PaymentRequestProviderInterface $paymentRequestProvider,
         private StateMachineInterface $stateMachine,
         private GoPayApiInterface $goPayApi,
+        private ExternalPaymentIdResolver $externalPaymentIdResolver,
     ) {
     }
 
@@ -43,9 +45,7 @@ final readonly class CompleteAuthorizedPaymentRequestHandler
 
         /** @var array<string, mixed> $authorizePayload */
         $authorizePayload = $authorizeRequest->getPayload() ?? [];
-        $externalPaymentId = isset($authorizePayload[PaymentConstants::EXTERNAL_PAYMENT_ID]) && is_int($authorizePayload[PaymentConstants::EXTERNAL_PAYMENT_ID])
-            ? $authorizePayload[PaymentConstants::EXTERNAL_PAYMENT_ID]
-            : null;
+        $externalPaymentId = $this->externalPaymentIdResolver->extractExternalPaymentId($authorizePayload);
 
         if ($externalPaymentId === null) {
             $this->failPaymentRequest($paymentRequest);

@@ -23,7 +23,17 @@ final readonly class ExternalPaymentIdResolver
     public function resolve(PaymentInterface $payment): ?int
     {
         return $this->fromPaymentDetails($payment)
-            ?? $this->fromCaptureRequest($payment);
+               ?? $this->fromCaptureRequest($payment);
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function extractExternalPaymentId(array $data): ?int
+    {
+        return isset($data[PaymentConstants::EXTERNAL_PAYMENT_ID]) && is_int($data[PaymentConstants::EXTERNAL_PAYMENT_ID])
+            ? $data[PaymentConstants::EXTERNAL_PAYMENT_ID]
+            : null;
     }
 
     private function fromPaymentDetails(PaymentInterface $payment): ?int
@@ -46,15 +56,5 @@ final readonly class ExternalPaymentIdResolver
         }
 
         return null;
-    }
-
-    /**
-     * @param array<string, mixed> $data
-     */
-    private function extractExternalPaymentId(array $data): ?int
-    {
-        return isset($data[PaymentConstants::EXTERNAL_PAYMENT_ID]) && is_int($data[PaymentConstants::EXTERNAL_PAYMENT_ID])
-            ? $data[PaymentConstants::EXTERNAL_PAYMENT_ID]
-            : null;
     }
 }

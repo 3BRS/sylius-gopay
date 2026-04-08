@@ -15,6 +15,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
 use ThreeBRS\SyliusGoPayPlugin\Command\StatusPaymentRequest;
 use ThreeBRS\SyliusGoPayPlugin\Model\PaymentConstants;
+use ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolver;
 
 #[AsMessageHandler]
 final readonly class StatusPaymentRequestHandler
@@ -25,6 +26,7 @@ final readonly class StatusPaymentRequestHandler
         private StateMachineInterface $stateMachine,
         private GoPayApiInterface $goPayApi,
         private PaymentRequestRepositoryInterface $paymentRequestRepository,
+        private ExternalPaymentIdResolver $externalPaymentIdResolver,
     ) {
     }
 
@@ -55,9 +57,7 @@ final readonly class StatusPaymentRequestHandler
             if ($capturePaymentRequest !== null) {
                 /** @var array<string, mixed> $capturePayload */
                 $capturePayload = $capturePaymentRequest->getPayload() ?? [];
-                $externalPaymentId = isset($capturePayload[PaymentConstants::EXTERNAL_PAYMENT_ID]) && is_int($capturePayload[PaymentConstants::EXTERNAL_PAYMENT_ID])
-                    ? $capturePayload[PaymentConstants::EXTERNAL_PAYMENT_ID]
-                    : null;
+                $externalPaymentId = $this->externalPaymentIdResolver->extractExternalPaymentId($capturePayload);
             }
         }
 
