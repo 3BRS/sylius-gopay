@@ -74,6 +74,7 @@ final readonly class NotifyPaymentRequestHandler
             $this->authorizePayment($paymentRequest);
         } else {
             $this->failPaymentRequest($paymentRequest);
+            $this->failPayment($paymentRequest);
         }
     }
 
@@ -136,6 +137,23 @@ final readonly class NotifyPaymentRequestHandler
                 $payment,
                 PaymentTransitions::GRAPH,
                 PaymentTransitions::TRANSITION_AUTHORIZE,
+            );
+        }
+    }
+
+    private function failPayment(PaymentRequestInterface $paymentRequest): void
+    {
+        $payment = $paymentRequest->getPayment();
+
+        if ($this->stateMachine->can(
+            $payment,
+            PaymentTransitions::GRAPH,
+            PaymentTransitions::TRANSITION_FAIL,
+        )) {
+            $this->stateMachine->apply(
+                $payment,
+                PaymentTransitions::GRAPH,
+                PaymentTransitions::TRANSITION_FAIL,
             );
         }
     }
