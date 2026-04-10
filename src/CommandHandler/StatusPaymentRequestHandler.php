@@ -15,7 +15,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
 use ThreeBRS\SyliusGoPayPlugin\Command\StatusPaymentRequest;
 use ThreeBRS\SyliusGoPayPlugin\Model\PaymentConstants;
-use ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolver;
+use ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolverInterface;
 
 #[AsMessageHandler]
 final readonly class StatusPaymentRequestHandler
@@ -26,7 +26,7 @@ final readonly class StatusPaymentRequestHandler
         private StateMachineInterface $stateMachine,
         private GoPayApiInterface $goPayApi,
         private PaymentRequestRepositoryInterface $paymentRequestRepository,
-        private ExternalPaymentIdResolver $externalPaymentIdResolver,
+        private ExternalPaymentIdResolverInterface $externalPaymentIdResolver,
     ) {
     }
 

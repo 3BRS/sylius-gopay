@@ -118,9 +118,16 @@ services:
         autowire: true
 
     # External Payment ID Resolver
-    ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolver:
+    threebrs.gopay.service.external_payment_id_resolver:
+        class: ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolver
         autoconfigure: true
         autowire: true
+
+    ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolverInterface:
+        alias: threebrs.gopay.service.external_payment_id_resolver
+
+    ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolver:
+        alias: threebrs.gopay.service.external_payment_id_resolver
 
     # Order Number Provider
     threebrs.gopay.provider.order_number:

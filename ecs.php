@@ -11,6 +11,8 @@ return static function (ECSConfig $ecsConfig): void {
         __DIR__ . '/ecs.php',
     ]);
 
+    $ecsConfig->cacheDirectory(__DIR__ . '/var/cache/ecs');
+
     $ecsConfig->import('vendor/sylius-labs/coding-standard/ecs.php');
 
     $ecsConfig->skip([

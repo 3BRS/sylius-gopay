@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\ThreeBRS\SyliusGoPayPlugin\Unit\CommandHandler;
 
 use GoPay\Http\Response;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Sylius\Abstraction\StateMachine\StateMachineInterface;
@@ -19,8 +20,10 @@ use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
 use ThreeBRS\SyliusGoPayPlugin\Command\StatusPaymentRequest;
 use ThreeBRS\SyliusGoPayPlugin\CommandHandler\StatusPaymentRequestHandler;
 use ThreeBRS\SyliusGoPayPlugin\Model\PaymentConstants;
+use ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolverInterface;
 use Sylius\Component\Payment\Model\PaymentInterface;
 
+#[AllowMockObjectsWithoutExpectations]
 final class StatusPaymentRequestHandlerTest extends TestCase
 {
     private PaymentRequestProviderInterface $paymentRequestProvider;
@@ -30,6 +33,8 @@ final class StatusPaymentRequestHandlerTest extends TestCase
     private GoPayApiInterface $goPayApi;
 
     private PaymentRequestRepositoryInterface $paymentRequestRepository;
+
+    private ExternalPaymentIdResolverInterface $externalPaymentIdResolver;
 
     private PaymentRequestInterface $paymentRequest;
 
@@ -45,6 +50,7 @@ final class StatusPaymentRequestHandlerTest extends TestCase
         $this->stateMachine = $this->createMock(StateMachineInterface::class);
         $this->goPayApi = $this->createMock(GoPayApiInterface::class);
         $this->paymentRequestRepository = $this->createMock(PaymentRequestRepositoryInterface::class);
+        $this->externalPaymentIdResolver = $this->createMock(ExternalPaymentIdResolverInterface::class);
 
         $this->paymentRequest = $this->createMock(PaymentRequestInterface::class);
         $this->capturePaymentRequest = $this->createMock(PaymentRequestInterface::class);
@@ -70,6 +76,7 @@ final class StatusPaymentRequestHandlerTest extends TestCase
             $this->stateMachine,
             $this->goPayApi,
             $this->paymentRequestRepository,
+            $this->externalPaymentIdResolver,
         );
     }
 
@@ -98,6 +105,10 @@ final class StatusPaymentRequestHandlerTest extends TestCase
         $this->paymentRequestRepository->method('findOneByActionPaymentAndMethod')
             ->with(PaymentRequestInterface::ACTION_CAPTURE, $this->payment, $this->paymentMethod)
             ->willReturn($this->capturePaymentRequest);
+
+        $this->externalPaymentIdResolver->method('extractExternalPaymentId')
+            ->with([PaymentConstants::EXTERNAL_PAYMENT_ID => 12345])
+            ->willReturn(12345);
 
         $goPayResponse = $this->createGoPayResponse(GoPayApiInterface::PAID);
         $this->goPayApi->expects($this->once())->method('retrieve')->with(12345)->willReturn($goPayResponse);
