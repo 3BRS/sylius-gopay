@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\ThreeBRS\SyliusGoPayPlugin\Unit\Provider;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
@@ -11,6 +12,7 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use ThreeBRS\SyliusGoPayPlugin\Provider\GoPayOrderNumberProvider;
 
+#[AllowMockObjectsWithoutExpectations]
 final class GoPayOrderNumberProviderTest extends TestCase
 {
     #[Test]

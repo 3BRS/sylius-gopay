@@ -8,27 +8,14 @@ use Sylius\Component\Payment\Model\PaymentInterface;
 use Sylius\Component\Payment\Model\PaymentRequestInterface;
 use ThreeBRS\SyliusGoPayPlugin\Model\PaymentConstants;
 
-/**
- * Resolves the GoPay external payment ID for a given payment.
- *
- * Supports both:
- * - Old Payum flow: externalPaymentId stored in Payment::details
- * - New Sylius 2.x Payment Request flow: externalPaymentId stored in capture PaymentRequest payload
- */
-final readonly class ExternalPaymentIdResolver
+readonly class ExternalPaymentIdResolver implements ExternalPaymentIdResolverInterface
 {
-    /**
-     * @return int|null The GoPay external payment ID, or null if not found
-     */
     public function resolve(PaymentInterface $payment): ?int
     {
         return $this->fromPaymentDetails($payment)
                ?? $this->fromCaptureRequest($payment);
     }
 
-    /**
-     * @param array<string, mixed> $data
-     */
     public function extractExternalPaymentId(array $data): ?int
     {
         return isset($data[PaymentConstants::EXTERNAL_PAYMENT_ID]) && is_int($data[PaymentConstants::EXTERNAL_PAYMENT_ID])

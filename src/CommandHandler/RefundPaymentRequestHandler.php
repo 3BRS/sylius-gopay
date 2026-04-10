@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
 use ThreeBRS\SyliusGoPayPlugin\Command\RefundPaymentRequest;
 use ThreeBRS\SyliusGoPayPlugin\Model\PaymentConstants;
-use ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolver;
+use ThreeBRS\SyliusGoPayPlugin\Service\ExternalPaymentIdResolverInterface;
 
 #[AsMessageHandler]
 final readonly class RefundPaymentRequestHandler
@@ -21,7 +21,7 @@ final readonly class RefundPaymentRequestHandler
         private PaymentRequestProviderInterface $paymentRequestProvider,
         private StateMachineInterface $stateMachine,
         private GoPayApiInterface $goPayApi,
-        private ExternalPaymentIdResolver $externalPaymentIdResolver,
+        private ExternalPaymentIdResolverInterface $externalPaymentIdResolver,
     ) {
     }
 

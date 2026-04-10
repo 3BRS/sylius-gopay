@@ -6,6 +6,7 @@ namespace Tests\ThreeBRS\SyliusGoPayPlugin\Unit\ResponseProvider;
 
 use Doctrine\ORM\EntityManagerInterface;
 use GoPay\Http\Response;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\ResourceBundle\Controller\RequestConfiguration;
@@ -19,6 +20,7 @@ use Symfony\Component\Uid\Uuid;
 use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
 use ThreeBRS\SyliusGoPayPlugin\ResponseProvider\CaptureHttpResponseProvider;
 
+#[AllowMockObjectsWithoutExpectations]
 final class CaptureHttpResponseProviderTest extends TestCase
 {
     #[Test]
