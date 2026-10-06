@@ -3,7 +3,7 @@ services:
         build:
             context: ./.docker/php
             args:
-                PHP_VERSION: ${PHP_VERSION:-8.3}
+                PHP_VERSION: ${PHP_VERSION:-8.4}
         environment:
             APP_ENV: "dev"
             APP_DEBUG: "1"

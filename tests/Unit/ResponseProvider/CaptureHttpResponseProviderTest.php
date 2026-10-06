@@ -15,6 +15,7 @@ use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Payment\Model\GatewayConfigInterface;
 use Sylius\Component\Payment\Model\PaymentMethodInterface;
 use Sylius\Component\Payment\Model\PaymentRequestInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Uuid;
 use ThreeBRS\SyliusGoPayPlugin\Api\GoPayApiInterface;
@@ -73,11 +74,25 @@ final class CaptureHttpResponseProviderTest extends TestCase
 
         $entityManager->expects($this->once())->method('flush');
 
-        $requestConfiguration = $this->createMock(RequestConfiguration::class);
-
         $provider = new CaptureHttpResponseProvider($goPayApi, $router, $entityManager);
-        $response = $provider->getResponse($requestConfiguration, $paymentRequest);
+        $response = $provider->getResponse(new Request(), $paymentRequest);
 
         $this->assertSame(302, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function it_supports_capture_for_request_and_request_configuration(): void
+    {
+        $paymentRequest = $this->createMock(PaymentRequestInterface::class);
+        $paymentRequest->method('getAction')->willReturn(PaymentRequestInterface::ACTION_CAPTURE);
+
+        $provider = new CaptureHttpResponseProvider(
+            $this->createMock(GoPayApiInterface::class),
+            $this->createMock(RouterInterface::class),
+            $this->createMock(EntityManagerInterface::class),
+        );
+
+        $this->assertTrue($provider->supports(new Request(), $paymentRequest));
+        $this->assertTrue($provider->supports($this->createMock(RequestConfiguration::class), $paymentRequest));
     }
 }

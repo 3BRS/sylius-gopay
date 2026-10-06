@@ -19,6 +19,14 @@
 - **Refund** via Sylius admin
   - _Refund_ button in order detail triggers call of GoPay API
 
+## Requirements
+
+| Package | Version         |
+|---------|-----------------|
+| PHP     | ^8.2            |
+| Sylius  | ^2.1            |
+| Symfony | ^7.4 \|\| ^8.0  |
+
 ## Installation
 Until pull request is merged, require it this way:
 ```bash

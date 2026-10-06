@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Bundle\CoreBundle\Fixture\Factory\ExampleFactoryInterface;
@@ -17,9 +18,7 @@ final readonly class PaymentContext implements Context
     {
     }
 
-    /**
-     * @Given the store allows paying with name :paymentMethodName and code :paymentMethodCode GoPay gateway
-     */
+    #[Given('the store allows paying with name :paymentMethodName and code :paymentMethodCode GoPay gateway')]
     public function theStoreHasPaymentMethodWithCodeAndGoPayCheckoutGateway(
         string $paymentMethodName,
         string $paymentMethodCode,
@@ -35,9 +34,7 @@ final readonly class PaymentContext implements Context
         $this->paymentMethodManager->flush();
     }
 
-    /**
-     * @Given the store allows paying with name :paymentMethodName and code :paymentMethodCode GoPay gateway with pre-authorization enabled
-     */
+    #[Given('the store allows paying with name :paymentMethodName and code :paymentMethodCode GoPay gateway with pre-authorization enabled')]
     public function theStoreHasPaymentMethodWithCodeAndGoPayCheckoutGatewayWithPreAuthorizationEnabled(
         string $paymentMethodName,
         string $paymentMethodCode,

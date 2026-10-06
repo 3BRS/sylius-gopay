@@ -11,3 +11,10 @@ parameters:
 
     excludePaths:
         - 'tests/'
+
+    ignoreErrors:
+        # Workflow events are generic only in Symfony 8
+        -
+            identifier: missingType.generics
+            path: src/EventListener/Workflow/PaymentFromCompletedStateListener.php
+            reportUnmatched: false

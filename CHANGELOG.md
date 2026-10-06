@@ -1,3 +1,12 @@
+# 3.2
+
+### Added
+- Support for Sylius 2.3
+- Support for Symfony 8
+
+### Changed
+- `CaptureHttpResponseProvider::supports()` and `getResponse()` accept `Symfony\Component\HttpFoundation\Request` (`HttpResponseProviderInterface` in Sylius 2.3) as well as `RequestConfiguration` (Sylius 2.1 and 2.2)
+
 # 3.1
 
 ### Added
