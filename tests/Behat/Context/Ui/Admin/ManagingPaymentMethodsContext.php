@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Ui\Admin;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
+use Behat\Step\When;
 use Sylius\Behat\Service\Resolver\CurrentPageResolverInterface;
 use Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\CreatePageInterface;
 use Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Pages\Admin\PaymentMethod\EditPageInterface;
@@ -18,9 +20,7 @@ final readonly class ManagingPaymentMethodsContext implements Context
     ) {
     }
 
-    /**
-     * @When I configure it with test GoPay credentials
-     */
+    #[When('I configure it with test GoPay credentials')]
     public function iConfigureItWithTestGoPayCredentials(): void
     {
         /** @var CreatePageInterface|EditPageInterface $currentPage */
@@ -35,9 +35,7 @@ final readonly class ManagingPaymentMethodsContext implements Context
         $currentPage->setGoPayClientSecret('TEST CLIENT SECRET');
     }
 
-    /**
-     * @When I configure it with test GoPay credentials and enable pre-authorization
-     */
+    #[When('I configure it with test GoPay credentials and enable pre-authorization')]
     public function iConfigureItWithTestGoPayCredentialsAndEnablePreAuthorization(): void
     {
         /** @var CreatePageInterface|EditPageInterface $currentPage */
@@ -53,9 +51,7 @@ final readonly class ManagingPaymentMethodsContext implements Context
         $currentPage->setGoPayClientSecret('TEST CLIENT SECRET');
     }
 
-    /**
-     * @When I enable authorize payment only
-     */
+    #[When('I enable authorize payment only')]
     public function iEnableAuthorizePaymentOnly(): void
     {
         /** @var CreatePageInterface|EditPageInterface $currentPage */
@@ -67,9 +63,7 @@ final readonly class ManagingPaymentMethodsContext implements Context
         $currentPage->setUseAuthorize(true);
     }
 
-    /**
-     * @When I disable authorize payment only
-     */
+    #[When('I disable authorize payment only')]
     public function iDisableAuthorizePaymentOnly(): void
     {
         /** @var CreatePageInterface|EditPageInterface $currentPage */
@@ -81,9 +75,7 @@ final readonly class ManagingPaymentMethodsContext implements Context
         $currentPage->setUseAuthorize(false);
     }
 
-    /**
-     * @Then the authorize payment only option should be enabled
-     */
+    #[Then('the authorize payment only option should be enabled')]
     public function theAuthorizePaymentOnlyOptionShouldBeEnabled(): void
     {
         /** @var CreatePageInterface|EditPageInterface $currentPage */
@@ -98,9 +90,7 @@ final readonly class ManagingPaymentMethodsContext implements Context
         );
     }
 
-    /**
-     * @Then the authorize payment only option should be disabled
-     */
+    #[Then('the authorize payment only option should be disabled')]
     public function theAuthorizePaymentOnlyOptionShouldBeDisabled(): void
     {
         /** @var CreatePageInterface|EditPageInterface $currentPage */

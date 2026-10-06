@@ -12,6 +12,7 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Payment\Model\PaymentRequestInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -32,14 +33,14 @@ final readonly class CaptureHttpResponseProvider implements HttpResponseProvider
     }
 
     public function supports(
-        RequestConfiguration $requestConfiguration,
+        RequestConfiguration|Request $request,
         PaymentRequestInterface $paymentRequest,
     ): bool {
         return $paymentRequest->getAction() === PaymentRequestInterface::ACTION_CAPTURE;
     }
 
     public function getResponse(
-        RequestConfiguration $requestConfiguration,
+        RequestConfiguration|Request $request,
         PaymentRequestInterface $paymentRequest,
     ): Response {
         // Get order data from payload

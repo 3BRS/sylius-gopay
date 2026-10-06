@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\ThreeBRS\SyliusGoPayPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+use Behat\Step\Then;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Abstraction\StateMachine\StateMachineInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
@@ -32,10 +34,8 @@ readonly class OrderContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^(this order) is already paid by GoPay with external payment ID ([0-9]+)$/
-     * @Given the order :order is already paid by GoPay with external payment ID :externalPaymentId
-     */
+    #[Given('/^(this order) is already paid by GoPay with external payment ID ([0-9]+)$/')]
+    #[Given('the order :order is already paid by GoPay with external payment ID :externalPaymentId')]
     public function thisOrderIsAlreadyPaidByGoPay(
         OrderInterface $order,
         int $externalPaymentId,
@@ -80,10 +80,8 @@ readonly class OrderContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^(this order) is already authorized by GoPay with external payment ID ([0-9]+)$/
-     * @Given the order :order is already authorized by GoPay with external payment ID :externalPaymentId
-     */
+    #[Given('/^(this order) is already authorized by GoPay with external payment ID ([0-9]+)$/')]
+    #[Given('the order :order is already authorized by GoPay with external payment ID :externalPaymentId')]
     public function thisOrderIsAlreadyAuthorizedByGoPay(
         OrderInterface $order,
         int $externalPaymentId,
@@ -128,9 +126,7 @@ readonly class OrderContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Then /^GoPay should be requested to refund (this order) with (this external payment ID)$/
-     */
+    #[Then('/^GoPay should be requested to refund (this order) with (this external payment ID)$/')]
     public function goPayShouldBeRequestedToRefundThatOrder(
         OrderInterface $order,
         $externalPaymentId,
@@ -150,9 +146,7 @@ readonly class OrderContext implements Context
         Assert::same($lastGoPayPaymentApi->getLastAmount(), $lastPayment->getAmount());
     }
 
-    /**
-     * @Then /^GoPay should be requested to capture authorization for (this order) with (this external payment ID)$/
-     */
+    #[Then('/^GoPay should be requested to capture authorization for (this order) with (this external payment ID)$/')]
     public function goPayShouldBeRequestedToCaptureAuthorizationForThatOrder(
         OrderInterface $order,
         $externalPaymentId,
