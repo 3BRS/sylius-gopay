@@ -201,6 +201,9 @@ echo "  - Sylius + Symfony versions: $(printf '%s, ' "${COMBINATIONS[@]}" | sed 
 echo "  - Composer preferences: ${COMPOSER_PREFERENCES[*]}"
 echo ""
 
+# Global Flex is installed into the php container, all bin-docker calls must reach the same running container
+docker compose up -d
+
 # Run all combinations
 for combination in "${COMBINATIONS[@]}"; do
     read -r sylius_version symfony_version <<< "$combination"
